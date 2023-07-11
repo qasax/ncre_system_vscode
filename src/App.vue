@@ -1,15 +1,38 @@
 <template>
-  <login-frame></login-frame>
+  <router-view></router-view>
 </template>
 
 <script>
-import LoginFrame from './pages/LoginFrame.vue';
-
+import { onMounted } from 'vue'
+import router from './vueRouter/main'
+import axios from 'axios'
 export default {
   name: 'App',
   components: {
-    LoginFrame,
+
+  },
+  setup() {
+    onMounted(() => {
+      axios.get('http://localhost:8080/sessionState').then(response => {
+        console.log(response.data)
+        if (response.data === false) {
+          router.push('/login')
+        } else {
+          router.push('/main')
+        }
+
+        // 处理登录成功逻辑
+      })
+        .catch(error => {
+          // 处理登录失败逻辑
+          console.log(error.data)
+        });
+
+
+
+    })
   }
+
 }
 </script>
 

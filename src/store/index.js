@@ -5,24 +5,24 @@ import { createStore } from 'vuex'
 const store = createStore({
   state: {
     // 在这里定义你的状态
-    product: {},
+    isLogin: false,
   },
   mutations: {
     // 在这里定义你的 mutations
-    changeProduct(state, value) {
-      state.product = value
+    changeIsLogin(state, value) {
+      state.isLogin = value
     },
   },
   actions: {
     // 在这里定义你的 actions
-    changeProduct(context, value) {
-      context.commit('changeProduct', value)
+    changeIsLogin(context, value) {
+      context.commit('changeIsLogin', value)
     },
   },
   getters: {
     // 在这里定义你的 getters
-    getProduct(state) {
-      return state.product
+    getIsLogin(state) {
+      return state.isLogin
     },
   },
 })

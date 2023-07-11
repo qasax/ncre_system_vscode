@@ -1,9 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useStore } from 'vuex'
 import { ElMessageBox } from 'element-plus'
+import LoginFrame from '../pages/LoginFrame.vue'
+import AdminFrame from '../pages/AdminFrame.vue'
 const router = createRouter({
   history: createWebHistory(),
-  routes: [],
+  routes: [
+    { path: '/login', component: LoginFrame },
+    { path: '/main', component: AdminFrame },
+  ],
 })
 router.beforeEach((to, from, next) => {
   console.log('beforeEach', to, from)

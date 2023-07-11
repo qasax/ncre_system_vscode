@@ -4,7 +4,7 @@
     <el-form class="login-form" label-position="top">
       <h2 class="title">登录</h2>
       <el-form-item label="用户名">
-        <el-input v-model="username" placeholder="请输入用户名"></el-input>
+        <el-input v-model="loginName" placeholder="请输入用户名"></el-input>
       </el-form-item>
       <el-form-item label="密码">
         <el-input type="password" v-model="password" placeholder="请输入密码"></el-input>
@@ -28,9 +28,10 @@ import axios from "axios";
 import { onMounted, ref } from "vue";
 import { useStore } from 'vuex'
 import { ElMessage } from 'element-plus'
+import router from "@/vueRouter/main";
 export default {
   setup() {
-    let username = ref("");
+    let loginName = ref("");
     let password = ref("");
     let identifyCode = ref("");
     let captchaImage = ref("");
@@ -41,20 +42,21 @@ export default {
 
     function login() {
       // 提交登录请求
-      let username1 = username.value
+      let loginName1 = loginName.value
       let password1 = password.value
       let identifyCode1 = identifyCode.value
       const requestBody = {
-        username: username1,
+        loginName: loginName1,
         password: password1,
         identifyCode: identifyCode1,
       }
-
-      axios.post('http://localhost:8081/api/login', requestBody)
+      axios.defaults.withCredentials = true;
+      axios.post('http://localhost:8080/login', requestBody)
         .then(response => {
           console.log(response.data)
           if (response.data == "登录成功") {
-            store.commit('changeShowState', true)
+            store.commit('changeIsLogin', true)
+            router.push('/main')
           }
           else {
             ElMessage({
@@ -79,7 +81,7 @@ export default {
     }
 
     return {
-      username,
+      loginName,
       password,
       identifyCode,
       captchaImage,
