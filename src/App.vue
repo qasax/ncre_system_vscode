@@ -13,6 +13,7 @@ export default {
   },
   setup() {
     onMounted(() => {
+      axios.defaults.withCredentials = true;
       axios.get('http://localhost:8080/sessionState').then(response => {
         console.log(response.data)
         if (response.data === false) {
@@ -43,6 +44,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
