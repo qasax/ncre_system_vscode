@@ -17,7 +17,7 @@
         <el-button type="primary" @click="login" style="margin: auto;">登录</el-button>
       </el-form-item>
       <el-row style="text-align: center;margin-top: -10px;">
-        <el-link type="primary" style="margin: auto;" @click="t">忘记密码?</el-link>
+        <el-link type="primary" style="margin: auto;">忘记密码?</el-link>
       </el-row>
     </el-form>
   </div>
