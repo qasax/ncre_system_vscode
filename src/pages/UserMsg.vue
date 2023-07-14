@@ -1,7 +1,7 @@
 <template>
   <el-page-header @back="goBack" style="border-bottom: 1px solid #ccc;height: 30px;padding-top: 10px">
     <template #content>
-      <span class=" text-large font-600 mr-3"> 监考员信息 </span>
+      <span class=" text-large font-600 mr-3"> 用户账号信息 </span>
     </template>
   </el-page-header>
   <div style="display: flex;align-items:center;">
@@ -13,7 +13,7 @@
     <el-button type="primary" @click="toSearch">查询</el-button>
   </div>
   <div style="margin-top: 20px;margin-bottom: 20px;margin-left: 20px;">
-    <el-button @Click="addStudentMsg()">添加 </el-button>
+    <el-button @Click="addUserMsg()">添加 </el-button>
     <el-button @Click="deleteSelectAll">批量删除</el-button>
     <el-button @click="toggleSelection()">清除选中</el-button>
   </div>
@@ -21,14 +21,11 @@
     @sort-change="handleSortChange" v-loading="loading" element-loading-text="Loading..." :element-loading-spinner="svg"
     element-loading-svg-view-box="-10, -10, 50, 50" element-loading-background="rgba(122, 122, 122, 0.8)">
     <el-table-column type="selection" width="120" />
-    <el-table-column label="序号" property="proctorID" width="120" sortable="custom"></el-table-column>
-    <el-table-column property="teacherName" label="姓名" width="120" />
-    <el-table-column property="gender" label="性别" width="120" />
-    <el-table-column property="age" label="年龄" width="120" />
-    <el-table-column property="phoneNumber" label="手机号" width="120" />
-    <el-table-column property="email" label="邮箱" width="120" />
+    <el-table-column label="序号" property="userID" width="120" sortable="custom"></el-table-column>
     <el-table-column property="username" label="用户名" width="120" />
-    <el-table-column fixed="right" label="操作" width="260">
+    <el-table-column property="password" label="密码" width="120" />
+    <el-table-column property="userType" label="用户类型" width="120" />
+    <el-table-column label="操作" width="510">
       <template #default="{ row }">
         <el-button link type="primary" size="small">详细</el-button>
         <el-button link type="primary" size="small" @click="handleClickEdit(row)">编辑</el-button>
@@ -78,8 +75,8 @@ export default {
         label: '用户序号',
       },
       {
-        value: '姓名',
-        label: '姓名',
+        value: '用户名',
+        label: '用户名',
       },
     ]
     const loading = ref(true)
@@ -103,6 +100,7 @@ export default {
       getTableData()
     }
     //表格单行操作
+
     const handleClickDelete = (val) => {
       console.log(val)
       ElMessageBox.confirm(
@@ -115,9 +113,9 @@ export default {
         }
       )
         .then(() => {
-          axios.get('http://localhost:8080/deleteOne', {
+          axios.get('http://localhost:8080/user/deleteOne', {
             params: {
-              ProctorID: val.proctorID,
+              userID: val.userID,
             }
           }).then((response) => {
             console.log(response.data)
@@ -131,6 +129,7 @@ export default {
               type: 'error',
               message: error.message,
             })
+
           })
         })
         .catch(() => {
@@ -144,12 +143,12 @@ export default {
     const handleClickEdit = (val) => {
       console.log(val)
       store.commit('changeEntity', val)
-      router.push('/main/proctoredit')
+      router.push('/main/useredit')
     }
 
-    //表格下部按钮
-    const addStudentMsg = () => {
-      router.push('/main/proctoradd')
+    //表格上部按钮
+    const addUserMsg = () => {
+      router.push('/main/useradd')
     }
     const deleteSelectAll = () => {
       console.log(multipleSelection.value)
@@ -165,10 +164,10 @@ export default {
       )
         .then(() => {
           Promise.all(selectList.map((select) => {
-            console.log(select.proctorID);
-            return axios.get('http://localhost:8080/deleteOne', {
+            console.log(select.userID);
+            return axios.get('http://localhost:8080/user/deleteOne', {
               params: {
-                ProctorID: select.proctorID,
+                userID: select.userID,
               }
             });
           })).then(() => {
@@ -228,7 +227,7 @@ export default {
     //向数据库请求数据的基础方法
     const getTableData = function () {
       loading.value = true
-      axios.get("http://localhost:8080/aLLProctors", {
+      axios.get("http://localhost:8080/user/allUser", {
         params: {
           pageNum: state.currentPage,
           pageSize: state.pageSize,
@@ -280,7 +279,7 @@ export default {
       deleteSelectAll,
       goBack,
       handleClickEdit,
-      addStudentMsg
+      addUserMsg
     }
   },
   components: {

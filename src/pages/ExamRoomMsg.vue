@@ -1,7 +1,7 @@
 <template>
   <el-page-header @back="goBack" style="border-bottom: 1px solid #ccc;height: 30px;padding-top: 10px">
     <template #content>
-      <span class=" text-large font-600 mr-3"> 监考员信息 </span>
+      <span class=" text-large font-600 mr-3"> 考场信息 </span>
     </template>
   </el-page-header>
   <div style="display: flex;align-items:center;">
@@ -13,22 +13,18 @@
     <el-button type="primary" @click="toSearch">查询</el-button>
   </div>
   <div style="margin-top: 20px;margin-bottom: 20px;margin-left: 20px;">
-    <el-button @Click="addStudentMsg()">添加 </el-button>
+    <el-button @Click="addExamRoomMsg()">添加 </el-button>
     <el-button @Click="deleteSelectAll">批量删除</el-button>
     <el-button @click="toggleSelection()">清除选中</el-button>
   </div>
   <el-table ref="multipleTableRef" :data="tableData" style="width: 100%" @selection-change="handleSelectionChange"
     @sort-change="handleSortChange" v-loading="loading" element-loading-text="Loading..." :element-loading-spinner="svg"
     element-loading-svg-view-box="-10, -10, 50, 50" element-loading-background="rgba(122, 122, 122, 0.8)">
-    <el-table-column type="selection" width="120" />
-    <el-table-column label="序号" property="proctorID" width="120" sortable="custom"></el-table-column>
-    <el-table-column property="teacherName" label="姓名" width="120" />
-    <el-table-column property="gender" label="性别" width="120" />
-    <el-table-column property="age" label="年龄" width="120" />
-    <el-table-column property="phoneNumber" label="手机号" width="120" />
-    <el-table-column property="email" label="邮箱" width="120" />
-    <el-table-column property="username" label="用户名" width="120" />
-    <el-table-column fixed="right" label="操作" width="260">
+    <el-table-column type="selection" />
+    <el-table-column label="序号" property="examRoomID" sortable="custom" />
+    <el-table-column property="examRoomName" label="考场名称" />
+    <el-table-column property="seatCount" label="座位数" />
+    <el-table-column label="操作">
       <template #default="{ row }">
         <el-button link type="primary" size="small">详细</el-button>
         <el-button link type="primary" size="small" @click="handleClickEdit(row)">编辑</el-button>
@@ -74,12 +70,12 @@ export default {
     })
     const serchOptions = [
       {
-        value: '用户序号',
-        label: '用户序号',
+        value: '考场序号',
+        label: '考场序号',
       },
       {
-        value: '姓名',
-        label: '姓名',
+        value: '考场名称',
+        label: '考场名称',
       },
     ]
     const loading = ref(true)
@@ -115,9 +111,9 @@ export default {
         }
       )
         .then(() => {
-          axios.get('http://localhost:8080/deleteOne', {
+          axios.get('http://localhost:8080/examroom/deleteOne', {
             params: {
-              ProctorID: val.proctorID,
+              ExamRoomID: val.examRoomID,
             }
           }).then((response) => {
             console.log(response.data)
@@ -144,12 +140,12 @@ export default {
     const handleClickEdit = (val) => {
       console.log(val)
       store.commit('changeEntity', val)
-      router.push('/main/proctoredit')
+      router.push('/main/examroomedit')
     }
 
     //表格下部按钮
-    const addStudentMsg = () => {
-      router.push('/main/proctoradd')
+    const addExamRoomMsg = () => {
+      router.push('/main/examroomadd')
     }
     const deleteSelectAll = () => {
       console.log(multipleSelection.value)
@@ -165,10 +161,10 @@ export default {
       )
         .then(() => {
           Promise.all(selectList.map((select) => {
-            console.log(select.proctorID);
-            return axios.get('http://localhost:8080/deleteOne', {
+            console.log(select.examRoomID);
+            return axios.get('http://localhost:8080/examroom/deleteOne', {
               params: {
-                ProctorID: select.proctorID,
+                ExamRoomID: select.examRoomID,
               }
             });
           })).then(() => {
@@ -228,7 +224,7 @@ export default {
     //向数据库请求数据的基础方法
     const getTableData = function () {
       loading.value = true
-      axios.get("http://localhost:8080/aLLProctors", {
+      axios.get("http://localhost:8080/examroom/aLLExamroom", {
         params: {
           pageNum: state.currentPage,
           pageSize: state.pageSize,
@@ -280,7 +276,7 @@ export default {
       deleteSelectAll,
       goBack,
       handleClickEdit,
-      addStudentMsg
+      addExamRoomMsg
     }
   },
   components: {

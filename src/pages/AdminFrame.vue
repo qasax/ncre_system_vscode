@@ -16,20 +16,23 @@
                     <span>管理系统</span>
                   </template>
                   <el-menu-item-group title="监考员管理">
-                    <el-menu-item index="/main/proctormsg">管理员信息管理</el-menu-item>
+                    <el-menu-item index="/main/proctormsg">监考员信息管理</el-menu-item>
                   </el-menu-item-group>
                   <el-menu-item-group title="考生管理">
-                    <el-menu-item index="1-3">考生信息管理</el-menu-item>
+                    <el-menu-item index="/main/studentmsg">考生信息管理</el-menu-item>
                   </el-menu-item-group>
                   <el-menu-item-group title="考场管理">
-                    <el-menu-item index="1-3">考场信息管理</el-menu-item>
+                    <el-menu-item index="/main/examroomMsg">考场信息管理</el-menu-item>
+                  </el-menu-item-group>
+                  <el-menu-item-group title="考试管理">
+                    <el-menu-item index="/main/exammsg">考试信息管理</el-menu-item>
                   </el-menu-item-group>
                 </el-sub-menu>
                 <el-menu-item index="2">
                   <span>管理员个人信息</span>
                 </el-menu-item>
-                <el-menu-item index="3" disabled>
-                  <span>Navigator Three</span>
+                <el-menu-item index="/main/usermsg">
+                  <span>用户账号管理</span>
                 </el-menu-item>
                 <el-menu-item index="4">
                   <span>Navigator Four</span>
@@ -37,7 +40,7 @@
               </el-menu>
             </el-col>
           </el-row></el-aside>
-        <el-main style="padding: 0px;"><router-view></router-view></el-main>
+        <el-main style="padding: 0px; text-align: left;"><router-view></router-view></el-main>
       </el-container>
     </el-container>
   </div>

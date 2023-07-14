@@ -5,13 +5,13 @@ import { createStore } from 'vuex'
 const store = createStore({
   state: {
     // 在这里定义你的状态
-    proctor: {},
+    entity: {},
     isLogin: false,
   },
   mutations: {
     // 在这里定义你的 mutations
-    changeProctor(state, value) {
-      state.proctor = value
+    changeEntity(state, value) {
+      state.entity = value
     },
     changeIsLogin(state, value) {
       state.isLogin = value
@@ -19,8 +19,8 @@ const store = createStore({
   },
   actions: {
     // 在这里定义你的 actions
-    changeProctor(context, value) {
-      context.commit('changeProctor', value)
+    changeEntity(context, value) {
+      context.commit('changeEntity', value)
     },
     changeIsLogin(context, value) {
       context.commit('changeIsLogin', value)
@@ -28,8 +28,8 @@ const store = createStore({
   },
   getters: {
     // 在这里定义你的 getters
-    getProctor(state) {
-      return state.proctor
+    getEntity(state) {
+      return state.entity
     },
     getIsLogin(state) {
       return state.isLogin

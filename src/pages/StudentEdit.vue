@@ -1,16 +1,16 @@
 <template>
   <el-page-header @back="goBack" style="border-bottom: 1px solid #ccc;height: 30px;padding-top: 10px">
     <template #content>
-      <span class=" text-large font-600 mr-3"> 监考员信息编辑 </span>
+      <span class=" text-large font-600 mr-3"> 考生信息编辑 </span>
     </template>
   </el-page-header>
   <div style="width: 30%;margin: auto;">
     <el-form style="margin-top: 50px;" ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="120px"
       class="demo-ruleForm">
-      <el-form-item label="姓名" prop="teacherName">
-        <el-input v-model="ruleForm.teacherName" type="text" autocomplete="off" />
+      <el-form-item label="姓名" prop="name">
+        <el-input v-model="ruleForm.name" type="text" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="用户名(只读)" prop="account">
+      <el-form-item label="用户名(只读)" prop="username">
         <el-input v-model="ruleForm.username" type="text" autocomplete="off" readonly="true" />
       </el-form-item>
       <el-form-item label="性别" prop="gender">
@@ -28,6 +28,15 @@
       </el-form-item>
       <el-form-item label="邮箱" prop="email">
         <el-input v-model="ruleForm.email" type="text" autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="考试号" prop="examID">
+        <el-input v-model="ruleForm.examID" type="text" autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="考场号" prop="examRoomID">
+        <el-input v-model="ruleForm.examRoomID" type="text" autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="座位号" prop="seatID">
+        <el-input v-model="ruleForm.seatID" type="text" autocomplete="off" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm(ruleFormRef)">提交</el-button>
@@ -49,17 +58,11 @@ export default {
     const store = useStore()
     //页头返回功能
     const goBack = function () {
-      router.push('/main/proctormsg')
+      router.push('/main/studentmsg')
     }
     //表单数据
     const ruleFormRef = ref(null)
     let ruleForm = reactive({
-      teacherName: '',
-      username: '',
-      gender: '',
-      age: '',
-      phoneNumber: '',
-      email: '',
     })
     ruleForm = store.getters.getEntity
     console.log(ruleForm)
@@ -104,7 +107,7 @@ export default {
 
     const rules = reactive(
       {
-        teacherName: [{ required: true, message: '请输入你的姓名', trigger: 'blur' }],
+        name: [{ required: true, message: '请输入你的姓名', trigger: 'blur' }],
         username: [{ required: true, message: '请输入账号', trigger: 'blur' }],
         gender: [{ required: true, message: '请选择你的性别', trigger: 'chanage' },],
         age: [
@@ -118,7 +121,10 @@ export default {
         email: [
           { required: true, message: '请输入电子邮箱账号', trigger: 'blur' },
           { validator: checkEmail, trigger: 'blur' }
-        ]
+        ],
+        examID: [{ required: true, message: '请输入考试号', trigger: 'blur' }],
+        examRoomID: [{ required: true, message: '请输入考场号', trigger: 'blur' }],
+        seatID: [{ required: true, message: '请输入座位号', trigger: 'blur' }],
       }
     )
 
@@ -138,7 +144,7 @@ export default {
           )
             .then(() => {
               console.log(ruleForm)
-              axios.post('http://localhost:8080/update', ruleForm)
+              axios.post('http://localhost:8080/student/update', ruleForm)
                 .then((response) => {
                   console.log(response.data)
                   ElMessage({
@@ -146,7 +152,7 @@ export default {
                     message: '修改成功',
                   })
                   setTimeout(() => {
-                    router.push('/main/proctormsg')
+                    router.push('/main/studentmsg')
                   }, 1000);
                 })
                 .catch(error => {

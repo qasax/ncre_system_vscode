@@ -6,6 +6,7 @@
 import { onMounted } from 'vue'
 import router from './vueRouter/main'
 import axios from 'axios'
+import { useStore } from 'vuex'
 export default {
   name: 'App',
   components: {
@@ -13,13 +14,16 @@ export default {
   },
   setup() {
     onMounted(() => {
+      const store = useStore()
       axios.defaults.withCredentials = true;
       axios.get('http://localhost:8080/sessionState').then(response => {
         console.log(response.data)
         if (response.data === false) {
           router.push('/login')
+          store.commit('changeIsLogin', false)
         } else {
           router.push('/main')
+          store.commit('changeIsLogin', true)
         }
 
         // 处理登录成功逻辑

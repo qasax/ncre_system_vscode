@@ -1,7 +1,7 @@
 <template>
   <el-page-header @back="goBack" style="border-bottom: 1px solid #ccc;height: 30px;padding-top: 10px">
     <template #content>
-      <span class=" text-large font-600 mr-3"> 监考员信息 </span>
+      <span class=" text-large font-600 mr-3"> 考生信息 </span>
     </template>
   </el-page-header>
   <div style="display: flex;align-items:center;">
@@ -20,15 +20,18 @@
   <el-table ref="multipleTableRef" :data="tableData" style="width: 100%" @selection-change="handleSelectionChange"
     @sort-change="handleSortChange" v-loading="loading" element-loading-text="Loading..." :element-loading-spinner="svg"
     element-loading-svg-view-box="-10, -10, 50, 50" element-loading-background="rgba(122, 122, 122, 0.8)">
-    <el-table-column type="selection" width="120" />
-    <el-table-column label="序号" property="proctorID" width="120" sortable="custom"></el-table-column>
-    <el-table-column property="teacherName" label="姓名" width="120" />
-    <el-table-column property="gender" label="性别" width="120" />
-    <el-table-column property="age" label="年龄" width="120" />
-    <el-table-column property="phoneNumber" label="手机号" width="120" />
-    <el-table-column property="email" label="邮箱" width="120" />
-    <el-table-column property="username" label="用户名" width="120" />
-    <el-table-column fixed="right" label="操作" width="260">
+    <el-table-column type="selection" />
+    <el-table-column label="序号" property="studentID" sortable="custom"></el-table-column>
+    <el-table-column property="name" label="姓名" />
+    <el-table-column property="gender" label="性别" />
+    <el-table-column property="age" label="年龄" />
+    <el-table-column property="phoneNumber" label="手机号" />
+    <el-table-column property="email" label="邮箱" />
+    <el-table-column property="examID" label="考试号" />
+    <el-table-column property="examRoomID" label="考场号" />
+    <el-table-column property="seatID" label="座位号" />
+    <el-table-column property="username" label="用户名" />
+    <el-table-column fixed="right" label="操作" width="200px">
       <template #default="{ row }">
         <el-button link type="primary" size="small">详细</el-button>
         <el-button link type="primary" size="small" @click="handleClickEdit(row)">编辑</el-button>
@@ -74,8 +77,8 @@ export default {
     })
     const serchOptions = [
       {
-        value: '用户序号',
-        label: '用户序号',
+        value: '考生序号',
+        label: '考生序号',
       },
       {
         value: '姓名',
@@ -115,9 +118,9 @@ export default {
         }
       )
         .then(() => {
-          axios.get('http://localhost:8080/deleteOne', {
+          axios.get('http://localhost:8080/student/deleteOne', {
             params: {
-              ProctorID: val.proctorID,
+              StudentID: val.studentID,
             }
           }).then((response) => {
             console.log(response.data)
@@ -144,12 +147,12 @@ export default {
     const handleClickEdit = (val) => {
       console.log(val)
       store.commit('changeEntity', val)
-      router.push('/main/proctoredit')
+      router.push('/main/studentedit')
     }
 
     //表格下部按钮
     const addStudentMsg = () => {
-      router.push('/main/proctoradd')
+      router.push('/main/studentadd')
     }
     const deleteSelectAll = () => {
       console.log(multipleSelection.value)
@@ -165,10 +168,10 @@ export default {
       )
         .then(() => {
           Promise.all(selectList.map((select) => {
-            console.log(select.proctorID);
-            return axios.get('http://localhost:8080/deleteOne', {
+            console.log(select.studentID);
+            return axios.get('http://localhost:8080/student/deleteOne', {
               params: {
-                ProctorID: select.proctorID,
+                StudentID: select.studentID,
               }
             });
           })).then(() => {
@@ -228,7 +231,7 @@ export default {
     //向数据库请求数据的基础方法
     const getTableData = function () {
       loading.value = true
-      axios.get("http://localhost:8080/aLLProctors", {
+      axios.get("http://localhost:8080/student/allStudent", {
         params: {
           pageNum: state.currentPage,
           pageSize: state.pageSize,
