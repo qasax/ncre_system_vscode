@@ -1,4 +1,4 @@
-// store/index.js
+// store/index.js----
 import { createStore } from 'vuex'
 
 // 创建 Vuex store 实例
