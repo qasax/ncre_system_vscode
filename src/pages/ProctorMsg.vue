@@ -8,9 +8,11 @@
     <el-select v-model="state.optionValue" class="m-2" size="large" placeholder="请选择查询依据">
       <el-option v-for="item in serchOptions" :key="item.value" :label="item.label" :value="item.value" />
     </el-select>
-    <div style="width: 800px;"><el-input v-model="state.searchValue" class="w-50 m-2" size="large" placeholder="请输入" />
+    <div style="width: 800px;margin-right:10px">
+      <el-input v-model="state.searchValue" class="w-50 m-2" size="large" placeholder="请输入" />
     </div>
-    <el-button type="primary" @click="toSearch">查询</el-button>
+      <el-button type="primary" @click="toSearch">查询</el-button>
+      <el-button type="primary" @click="toReset">重置</el-button>
   </div>
   <div style="margin-top: 20px;margin-bottom: 20px;margin-left: 20px;">
     <el-button @Click="addStudentMsg()">添加 </el-button>
@@ -19,7 +21,7 @@
   </div>
   <el-table ref="multipleTableRef" :data="tableData" style="width: 100%" @selection-change="handleSelectionChange"
     @sort-change="handleSortChange" v-loading="loading" element-loading-text="Loading..." :element-loading-spinner="svg"
-    element-loading-svg-view-box="-10, -10, 50, 50" element-loading-background="rgba(122, 122, 122, 0.8)">
+    element-loading-svg-view-box="-10, -10, 50, 50" element-loading-background="rgba(122, 122, 122, 0.8)" :default-sort="{prop: 'proctorID', order: 'ascending'}">
     <el-table-column type="selection" width="120" />
     <el-table-column label="序号" property="proctorID" width="120" sortable="custom"></el-table-column>
     <el-table-column property="teacherName" label="姓名" width="120" />
@@ -74,8 +76,8 @@ export default {
     })
     const serchOptions = [
       {
-        value: '用户序号',
-        label: '用户序号',
+        value: '监考员序号',
+        label: '监考员序号',
       },
       {
         value: '姓名',
@@ -100,6 +102,16 @@ export default {
     //搜索按钮功能
     const toSearch = () => {
       state.isSearch = true
+      getTableData()
+    }
+    const toReset=()=>{
+      state.isSearch=false
+      state.searchValue=''
+      state.optionValue=''
+      state.currentPage=1
+      state.pageSize=10
+      state.sortOrder='ascending'
+      state.sortProp=''
       getTableData()
     }
     //表格单行操作
@@ -280,7 +292,8 @@ export default {
       deleteSelectAll,
       goBack,
       handleClickEdit,
-      addStudentMsg
+      addStudentMsg,
+      toReset
     }
   },
   components: {

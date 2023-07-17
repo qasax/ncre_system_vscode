@@ -10,8 +10,10 @@
       <el-form-item label="姓名" prop="teacherName">
         <el-input v-model="ruleForm.teacherName" type="text" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="用户名(只读)" prop="account">
-        <el-input v-model="ruleForm.username" type="text" autocomplete="off" />
+      <el-form-item label="用户名(可选)" prop="username">
+        <el-select v-model="ruleForm.username" placeholder="请选择">
+          <el-option v-for="(option, index) in options" :key="index" :label="option.username" :value="option.username"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="性别" prop="gender">
         <el-select v-model="ruleForm.gender" placeholder="请选择">
@@ -39,7 +41,7 @@
 
 <script>
 import router from '@/vueRouter/main'
-import { reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import axios from 'axios'
 import { ElMessageBox, ElMessage } from 'element-plus'
 axios.defaults.withCredentials = true;
@@ -59,7 +61,15 @@ export default {
       phoneNumber: '',
       email: '',
     })
-
+    let options=ref([])
+    //生命周期
+    onMounted(()=>{
+      axios.get("http://localhost:8080/user/findProctors").then((response)=>{
+        console.log("查询用户表无对应监考员信息的账号")
+        console.log(response.data)
+        options.value=response.data
+      })
+    })
     //表单验证规则
     const checkAge = (rule, value, callback) => {
       if (!value) {
@@ -101,7 +111,7 @@ export default {
     const rules = reactive(
       {
         teacherName: [{ required: true, message: '请输入你的姓名', trigger: 'blur' }],
-        username: [{ required: true, message: '请输入账号', trigger: 'blur' }],
+        username:[{ required: true, message: '请选择对应用户', trigger: 'chanage' },],
         gender: [{ required: true, message: '请选择你的性别', trigger: 'chanage' },],
         age: [
           { required: true, message: '请输入年龄', trigger: 'blur' },
@@ -177,7 +187,8 @@ export default {
       ruleForm,
       rules,
       submitForm,
-      resetForm
+      resetForm,
+      options
     }
   }
 }
