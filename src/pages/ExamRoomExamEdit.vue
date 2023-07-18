@@ -15,8 +15,8 @@
           </el-form-item>
           <el-form-item label="可选考场名称" prop="examRoomID">
               <el-select  v-model="ruleForm.examRoomID">
-                <el-option v-for="(examRoom, index) in examRooms" :key="index" :label="examRoom.examRoomName" :value="examRoom.examRoomID" >
-                  </el-option>
+                <el-option v-for="(examRoom, index) in examRooms" :key="index" :label="examRoom.examRoomName" :value="examRoom.examRoomID" ></el-option>
+                <el-option :label="examRoomName" :value="examRoomID"  ></el-option>
               </el-select>
              </el-form-item>
   
@@ -58,6 +58,8 @@
       let ruleForm = reactive({
       })
       ruleForm = store.getters.getEntity
+      const  examRoomID=ref( store.getters.getEntity.examRoomID)
+      const  examRoomName= ref(store.getters.getEntity.examRoomName)
       console.log(ruleForm)
   
       //表单验证规则
@@ -127,7 +129,10 @@
         rules,
         submitForm,
         resetForm,
-        examRooms
+        examRooms,
+        store,
+        examRoomID,
+        examRoomName
       }
     }
   }
