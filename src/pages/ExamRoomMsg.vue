@@ -125,7 +125,7 @@ export default {
         .then(() => {
           axios.get('http://localhost:8080/examroom/deleteOne', {
             params: {
-              ExamRoomID: val.examRoomID,
+              examRoomID: val.examRoomID,
             }
           }).then((response) => {
             console.log(response.data)
@@ -176,7 +176,7 @@ export default {
             console.log(select.examRoomID);
             return axios.get('http://localhost:8080/examroom/deleteOne', {
               params: {
-                ExamRoomID: select.examRoomID,
+                examRoomID: select.examRoomID,
               }
             });
           })).then(() => {

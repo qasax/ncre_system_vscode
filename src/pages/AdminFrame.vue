@@ -13,24 +13,39 @@
                 @close="handleClose" :router="true" style="width: 250px;">
                 <el-sub-menu index="1">
                   <template #title>
-                    <span>管理系统</span>
+                    <span>基本信息管理</span>
                   </template>
-                  <el-menu-item-group title="监考员管理">
+                  <el-menu-item-group title="监考员信息管理">
                     <el-menu-item index="/main/proctormsg">监考员信息管理</el-menu-item>
                   </el-menu-item-group>
-                  <el-menu-item-group title="考生管理">
+                  <el-menu-item-group title="考生信息管理">
                     <el-menu-item index="/main/studentmsg">考生信息管理</el-menu-item>
                   </el-menu-item-group>
-                  <el-menu-item-group title="考场管理">
+                  <el-menu-item-group title="考场信息管理">
                     <el-menu-item index="/main/examroomMsg">考场信息管理</el-menu-item>
                   </el-menu-item-group>
-                  <el-menu-item-group title="考试管理">
+                  <el-menu-item-group title="考试信息管理">
                     <el-menu-item index="/main/exammsg">考试信息管理</el-menu-item>
                   </el-menu-item-group>
+                  <el-menu-item-group title="用户账号信息管理">
+                    <el-menu-item index="/main/usermsg">用户账号管理</el-menu-item>
+                  </el-menu-item-group>
                 </el-sub-menu>
-                <el-menu-item index="2">
-                  <span>管理员个人信息</span>
-                </el-menu-item>
+
+                <el-sub-menu index="2">
+                  <template #title>
+                    <span>考试管理</span>
+                  </template>
+                  <el-menu-item-group title="报名管理">
+                    <el-menu-item index="/main/">报名管理</el-menu-item>
+                  </el-menu-item-group>
+                  <el-menu-item-group title="考试综合信息管理">
+                    <el-menu-item index="/main/examroomexammsg">考试-考场分配</el-menu-item>
+                    <el-menu-item index="/main/">监考员-考场分配</el-menu-item>
+
+                  </el-menu-item-group>
+                  
+                </el-sub-menu>
                 <el-menu-item index="/main/usermsg">
                   <span>用户账号管理</span>
                 </el-menu-item>

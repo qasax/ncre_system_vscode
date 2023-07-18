@@ -15,7 +15,7 @@
       </el-form-item>
 
       <el-form-item label="考试时间" prop="examTime">
-        <el-input v-model.number="ruleForm.examTime" />
+        <el-input v-model="ruleForm.examTime" />
       </el-form-item>
       <el-form-item label="考试地点" prop="examLocation">
         <el-input v-model="ruleForm.examLocation" type="text" autocomplete="off" />
