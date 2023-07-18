@@ -19,6 +19,8 @@ import UserEdit from '../pages/UserEdit'
 import ExamRoomExamMsg from '../pages/ExamRoomExamMsg.vue'
 import ExamRoomExamAdd from '../pages/ExamRoomExamAdd'
 import ExamRoomExamEdit from '../pages/ExamRoomExamEdit'
+import EreProctorsMsg from '../pages/EreProctorsMsg'
+import EreProctorsEdit from '../pages/EreProctorsEdit'
 import { useStore } from 'vuex'
 import axios from 'axios'
 axios.defaults.withCredentials = true
@@ -49,6 +51,8 @@ const router = createRouter({
         { path: 'examroomexammsg', component: ExamRoomExamMsg },
         { path: 'examroomexamadd', component: ExamRoomExamAdd },
         { path: 'examroomexamedit', component: ExamRoomExamEdit },
+        { path: 'ereproctorsmsg', component: EreProctorsMsg },
+        { path: 'ereproctorsedit', component: EreProctorsEdit },
       ],
     },
   ],

@@ -1,7 +1,7 @@
 <template>
     <el-page-header @back="goBack" style="border-bottom: 1px solid #ccc;height: 30px;padding-top: 10px">
       <template #content>
-        <span class=" text-large font-600 mr-3"> 考试-考场分配 </span>
+        <span class=" text-large font-600 mr-3"> 考试-管理员分配 </span>
       </template>
     </el-page-header>
     <div style="display: flex;align-items:center;">
@@ -14,15 +14,9 @@
         <el-button type="primary" @click="toSearch">查询</el-button>
         <el-button type="primary" @click="toReset">重置</el-button>
     </div>
-    <div style="margin-top: 20px;margin-bottom: 20px;margin-left: 20px;">
-      <el-button @Click="addExamRoomMsg()">添加 </el-button>
-      <el-button @Click="deleteSelectAll">批量删除</el-button>
-      <el-button @click="toggleSelection()">清除选中</el-button>
-    </div>
-    <el-table ref="multipleTableRef" :data="tableData" style="width: 100%" @selection-change="handleSelectionChange"
+    <el-table ref="multipleTableRef" :data="tableData" style="width: 100%" 
       @sort-change="handleSortChange" v-loading="loading" element-loading-text="Loading..." :element-loading-spinner="svg"
       element-loading-svg-view-box="-10, -10, 50, 50" element-loading-background="rgba(122, 122, 122, 0.8)" :default-sort="{prop: 'ereID', order: 'ascending'}">
-      <el-table-column type="selection" />
       <el-table-column label="序号" property="ereID" sortable="custom" />
       <el-table-column property="examID" label="考试编号" />
       <el-table-column label="考场序号" property="examRoomID" />
@@ -32,11 +26,12 @@
       <el-table-column property="examDate" label="考试日期" />
       <el-table-column property="examTime" label="考试时间段" />
       <el-table-column property="seatCount" label="座位数" />
-
+      <el-table-column property="proctors[0].teacherName" label="监考员1" />
+      <el-table-column property="proctors[1].teacherName" label="监考员2" />
       <el-table-column label="操作">
         <template #default="{ row }">
-          <el-button link type="primary" size="small">详细</el-button>
-          <el-button link type="primary" size="small" @click="handleClickEdit(row)">编辑</el-button>
+          <el-button link type="primary" size="small">查看该场次考场的全部考生</el-button>
+          <el-button link type="primary" size="small" @click="handleClickEdit(row)">修改场次负责监考员</el-button>
           <el-button link type="primary" size="small" @click="handleClickDelete(row)">删除</el-button>
         </template>
       </el-table-column>
@@ -52,7 +47,7 @@
   
   <script>
   import { onMounted, ref, reactive } from 'vue'
-  import { ElTable, ElMessageBox, ElMessage } from 'element-plus'
+  import { ElTable, ElMessage } from 'element-plus'
   import axios from 'axios'
   import router from '@/vueRouter/main';
   import { useStore } from 'vuex';
@@ -61,7 +56,6 @@
     setup() {
       const store = useStore()
       const multipleTableRef = ref()
-      const multipleSelection = ref([])
       const tableData = ref([])
       //分页依据相关数据
       const state = reactive({
@@ -118,111 +112,13 @@
         getTableData()
       }
       //表格单行操作
-      const handleClickDelete = (val) => {
-        console.log(val)
-        ElMessageBox.confirm(
-          '是否确定进行删除?',
-          '警告',
-          {
-            confirmButtonText: '是',
-            cancelButtonText: '否',
-            type: 'warning',
-          }
-        )
-          .then(() => {
-            axios.get('http://localhost:8080/examRoomExam/deleteOne', {
-              params: {
-                ereID: val.ereID,
-              }
-            }).then((response) => {
-              console.log(response.data)
-              ElMessage({
-                type: 'success',
-                message: '删除成功',
-              })
-              getTableData()
-            }).catch((error) => {
-              ElMessage({
-                type: 'error',
-                message: error.message,
-              })
-            })
-          })
-          .catch(() => {
-            ElMessage({
-              type: 'info',
-              message: '取消删除',
-            })
-          })
-  
-      }
       const handleClickEdit = (val) => {
         console.log(val)
         store.commit('changeEntity', val)
-        router.push('/main/examroomexamedit')
+        router.push('/main/ereproctorsedit')
       }
   
-      //表格上部按钮
-      const addExamRoomMsg = () => {
-        router.push('/main/examroomexameadd')
-      }
-      const deleteSelectAll = () => {
-        console.log(multipleSelection.value)
-        const selectList = multipleSelection.value
-        ElMessageBox.confirm(
-          '是否确定进行删除?',
-          '警告',
-          {
-            confirmButtonText: '是',
-            cancelButtonText: '否',
-            type: 'warning',
-          }
-        )
-          .then(() => {
-            Promise.all(selectList.map((select) => {
-              console.log(select.ereID);
-              return axios.get('http://localhost:8080/examRoomExam/deleteOne', {
-                params: {
-                  ereID: select.ereID,
-                }
-              });
-            })).then(() => {
-              console.log('All requests completed');
-              ElMessage({
-                type: 'success',
-                message: '批量删除成功',
-              })
-              getTableData()
-              // do other stuff here
-            }).catch((error) => {
-              console.log('Some requests failed:', error);
-              ElMessage({
-                type: 'error',
-                message: error.message,
-              })
-            });
-          })
-          .catch(() => {
-            ElMessage({
-              type: 'info',
-              message: '取消删除',
-            })
-          })
-  
-      }
-      const toggleSelection = (rows) => {
-        if (rows) {
-          rows.forEach((row) => {
-            multipleTableRef.value.toggleRowSelection(row, undefined)
-          })
-        } else {
-          multipleTableRef.value.clearSelection()
-        }
-      }
       //el表格固定api
-      const handleSelectionChange = (val) => {
-        multipleSelection.value = val
-      }
       const handleSortChange = (val) => {
         console.log(val)
         state.sortProp = val.prop
@@ -243,7 +139,7 @@
       //向数据库请求数据的基础方法
       const getTableData = function () {
         loading.value = true
-        axios.get("http://localhost:8080/examRoomExam/aLLExamroomExam", {
+        axios.get("http://localhost:8080/ereProctors/allEreProctors", {
           params: {
             pageNum: state.currentPage,
             pageSize: state.pageSize,
@@ -256,7 +152,7 @@
         }).then(response => {
           response.data
           tableData.value = response.data.list
-          state.total = response.data.total
+          state.total = response.data.list.length
           setTimeout(() => {
             loading.value = false
             if (state.isSearch == true) {
@@ -278,9 +174,6 @@
   
       return {
         multipleTableRef,
-        multipleSelection,
-        toggleSelection,
-        handleSelectionChange,
         tableData,
         state,
         handleSizeChange,
@@ -289,13 +182,10 @@
         handleSortChange,
         serchOptions,
         toSearch,
-        handleClickDelete,
         loading,
         svg,
-        deleteSelectAll,
         goBack,
         handleClickEdit,
-        addExamRoomMsg,
         toReset
       }
     },

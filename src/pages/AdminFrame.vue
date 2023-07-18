@@ -41,7 +41,7 @@
                   </el-menu-item-group>
                   <el-menu-item-group title="考试综合信息管理">
                     <el-menu-item index="/main/examroomexammsg">考试-考场分配</el-menu-item>
-                    <el-menu-item index="/main/">监考员-考场分配</el-menu-item>
+                    <el-menu-item index="/main/ereproctorsmsg">监考员-考场分配</el-menu-item>
 
                   </el-menu-item-group>
                   
