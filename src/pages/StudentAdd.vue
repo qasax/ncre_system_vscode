@@ -1,48 +1,84 @@
 <template>
-  <el-page-header @back="goBack" style="border-bottom: 1px solid #ccc;height: 30px;padding-top: 10px">
+  <el-page-header @back="goBack"
+                  style="border-bottom: 1px solid #ccc;height: 30px;padding-top: 10px">
     <template #content>
       <span class=" text-large font-600 mr-3"> 考生信息编辑 </span>
     </template>
   </el-page-header>
   <div style="width: 30%;margin: auto;">
-    <el-form style="margin-top: 50px;" ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="120px"
-      class="demo-ruleForm">
-      <el-form-item label="姓名" prop="name">
-        <el-input v-model="ruleForm.name" type="text" autocomplete="off" />
+    <el-form style="margin-top: 50px;"
+             ref="ruleFormRef"
+             :model="ruleForm"
+             status-icon
+             :rules="rules"
+             label-width="120px"
+             class="demo-ruleForm">
+      <el-form-item label="姓名"
+                    prop="name">
+        <el-input v-model="ruleForm.name"
+                  type="text"
+                  autocomplete="off" />
       </el-form-item>
-      <el-form-item label="用户名(可选)" prop="username">
-        <el-select v-model="ruleForm.username" placeholder="请选择"  no-data-text="无可用账户">
-          <el-option v-for="(option, index) in options" :key="index" :label="option.username" :value="option.username"></el-option>
+      <el-form-item label="用户名(可选)"
+                    prop="username">
+        <el-select v-model="ruleForm.username"
+                   placeholder="请选择"
+                   no-data-text="无可用账户">
+          <el-option v-for="(option, index) in options"
+                     :key="index"
+                     :label="option.username"
+                     :value="option.username"></el-option>
         </el-select>
       </el-form-item>
 
-      <el-form-item label="性别" prop="gender">
-        <el-select v-model="ruleForm.gender" placeholder="请选择">
-          <el-option label="男" value="男"></el-option>
-          <el-option label="女" value="女"></el-option>
+      <el-form-item label="性别"
+                    prop="gender">
+        <el-select v-model="ruleForm.gender"
+                   placeholder="请选择">
+          <el-option label="男"
+                     value="男"></el-option>
+          <el-option label="女"
+                     value="女"></el-option>
         </el-select>
       </el-form-item>
 
-      <el-form-item label="年龄" prop="age">
+      <el-form-item label="年龄"
+                    prop="age">
         <el-input v-model.number="ruleForm.age" />
       </el-form-item>
-      <el-form-item label="手机号" prop="phoneNumber">
-        <el-input v-model="ruleForm.phoneNumber" type="text" autocomplete="off" />
+      <el-form-item label="手机号"
+                    prop="phoneNumber">
+        <el-input v-model="ruleForm.phoneNumber"
+                  type="text"
+                  autocomplete="off" />
       </el-form-item>
-      <el-form-item label="邮箱" prop="email">
-        <el-input v-model="ruleForm.email" type="text" autocomplete="off" />
+      <el-form-item label="邮箱"
+                    prop="email">
+        <el-input v-model="ruleForm.email"
+                  type="text"
+                  autocomplete="off" />
       </el-form-item>
-      <el-form-item label="考试号" prop="examID">
-        <el-input v-model="ruleForm.examID" type="text" autocomplete="off" />
+      <el-form-item label="考试号"
+                    prop="examID">
+        <el-input v-model="ruleForm.examID"
+                  type="text"
+                  autocomplete="off" />
       </el-form-item>
-      <el-form-item label="考场号" prop="examRoomID">
-        <el-input v-model="ruleForm.examRoomID" type="text" autocomplete="off" />
+      <el-form-item label="考场号"
+                    prop="examRoomID">
+        <el-input v-model="ruleForm.examRoomID"
+                  type="text"
+                  autocomplete="off" />
       </el-form-item>
-      <el-form-item label="座位号" prop="seatID">
-        <el-input v-model="ruleForm.seatID" type="text" autocomplete="off" />
+      <el-form-item label="座位号"
+                    prop="seatID">
+        <el-input v-model="ruleForm.seatID"
+                  type="text"
+                  autocomplete="off" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm(ruleFormRef)">提交</el-button>
+        <el-button type="primary"
+                   @click="submitForm(ruleFormRef)">提交</el-button>
         <el-button @click="resetForm(ruleFormRef)">重置</el-button>
       </el-form-item>
     </el-form>
@@ -56,7 +92,7 @@ import axios from 'axios'
 import { ElMessageBox, ElMessage } from 'element-plus'
 axios.defaults.withCredentials = true;
 export default {
-  setup() {
+  setup () {
     //页头返回功能
     const goBack = function () {
       router.push('/main/studentmsg')
@@ -73,13 +109,13 @@ export default {
       seatID: '',
 
     })
-    let options=ref([])
+    let options = ref([])
     //生命周期
-    onMounted(()=>{
-      axios.get("http://localhost:8080/user/findStudents").then((response)=>{
+    onMounted(() => {
+      axios.get("http://localhost:8080/user/findStudents").then((response) => {
         console.log("查询用户表无对应学生信息的账号")
         console.log(response.data)
-        options.value=response.data
+        options.value = response.data
       })
     })
     //表单验证规则

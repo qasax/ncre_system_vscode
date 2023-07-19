@@ -1,48 +1,89 @@
 <template>
-  <el-page-header @back="goBack" style="border-bottom: 1px solid #ccc;height: 30px;padding-top: 10px">
+  <el-page-header @back="goBack"
+                  style="border-bottom: 1px solid #ccc;height: 30px;padding-top: 10px">
     <template #content>
       <span class=" text-large font-600 mr-3"> 考试信息 </span>
     </template>
   </el-page-header>
   <div style="display: flex;align-items:center;">
-    <el-select v-model="state.optionValue" class="m-2" size="large" placeholder="请选择查询依据">
-      <el-option v-for="item in serchOptions" :key="item.value" :label="item.label" :value="item.value" />
+    <el-select v-model="state.optionValue"
+               class="m-2"
+               size="large"
+               placeholder="请选择查询依据">
+      <el-option v-for="item in serchOptions"
+                 :key="item.value"
+                 :label="item.label"
+                 :value="item.value" />
     </el-select>
     <div style="width: 800px;margin-right:10px">
-      <el-input v-model="state.searchValue" class="w-50 m-2" size="large" placeholder="请输入" />
+      <el-input v-model="state.searchValue"
+                class="w-50 m-2"
+                size="large"
+                placeholder="请输入" />
     </div>
-      <el-button type="primary" @click="toSearch">查询</el-button>
-      <el-button type="primary" @click="toReset">重置</el-button>
-    
+    <el-button type="primary"
+               @click="toSearch">查询</el-button>
+    <el-button type="primary"
+               @click="toReset">重置</el-button>
+
   </div>
   <div style="margin-top: 20px;margin-bottom: 20px;margin-left: 20px;">
     <el-button @Click="addExamMsg()">添加 </el-button>
     <el-button @Click="deleteSelectAll">批量删除</el-button>
     <el-button @click="toggleSelection()">清除选中</el-button>
   </div>
-  <el-table ref="multipleTableRef" :data="tableData" style="width: 100%" @selection-change="handleSelectionChange"
-    @sort-change="handleSortChange" v-loading="loading" element-loading-text="Loading..." :element-loading-spinner="svg"
-    element-loading-svg-view-box="-10, -10, 50, 50" element-loading-background="rgba(122, 122, 122, 0.8)" :default-sort="{prop: 'examID', order: 'ascending'}">
-    <el-table-column type="selection"  />
-    <el-table-column label="序号" property="examID"  sortable="custom"></el-table-column>
-    <el-table-column property="examName" label="考试名称"  />
-    <el-table-column property="examDate" label="考试日期" />
-    <el-table-column property="examTime" label="考试时间" />
-    <el-table-column property="examLocation" label="考试地点"  />
-    <el-table-column label="操作" >
+  <el-table ref="multipleTableRef"
+            :data="tableData"
+            style="width: 100%"
+            @selection-change="handleSelectionChange"
+            @sort-change="handleSortChange"
+            v-loading="loading"
+            element-loading-text="Loading..."
+            :element-loading-spinner="svg"
+            element-loading-svg-view-box="-10, -10, 50, 50"
+            element-loading-background="rgba(122, 122, 122, 0.8)"
+            :default-sort="{prop: 'examID', order: 'ascending'}">
+    <el-table-column type="selection" />
+    <el-table-column label="序号"
+                     property="examID"
+                     sortable="custom"></el-table-column>
+    <el-table-column property="examName"
+                     label="考试名称" />
+    <el-table-column property="examDate"
+                     label="考试日期" />
+    <el-table-column property="examTime"
+                     label="考试时间" />
+    <el-table-column property="examLocation"
+                     label="考试地点" />
+    <el-table-column label="操作">
       <template #default="{ row }">
-        <el-button link type="primary" size="small">详细</el-button>
-        <el-button link type="primary" size="small" @click="handleClickEdit(row)">编辑</el-button>
-        <el-button link type="primary" size="small" @click="handleClickDelete(row)">删除</el-button>
+        <el-button link
+                   type="primary"
+                   size="small">详细</el-button>
+        <el-button link
+                   type="primary"
+                   size="small"
+                   @click="handleClickEdit(row)">编辑</el-button>
+        <el-button link
+                   type="primary"
+                   size="small"
+                   @click="handleClickDelete(row)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
 
-  <div class="demo-pagination-block" style="margin-top: 10px;margin-left: 250px; margin-bottom: 20px;">
-    <el-pagination v-model:current-page="state.currentPage" v-model:page-size="state.pageSize"
-      :page-sizes="[10, 20, 30, 40]" :small="state.small" :disabled="state.disabled" :background="state.background"
-      layout="total, sizes, prev, pager, next, jumper" :total="state.total" @size-change="handleSizeChange"
-      @current-change="handleCurrentChange" />
+  <div class="demo-pagination-block"
+       style="margin-top: 10px;margin-left: 250px; margin-bottom: 20px;">
+    <el-pagination v-model:current-page="state.currentPage"
+                   v-model:page-size="state.pageSize"
+                   :page-sizes="[10, 20, 30, 40]"
+                   :small="state.small"
+                   :disabled="state.disabled"
+                   :background="state.background"
+                   layout="total, sizes, prev, pager, next, jumper"
+                   :total="state.total"
+                   @size-change="handleSizeChange"
+                   @current-change="handleCurrentChange" />
   </div>
 </template>
 
@@ -54,7 +95,7 @@ import router from '@/vueRouter/main';
 import { useStore } from 'vuex';
 axios.defaults.withCredentials = true;
 export default {
-  setup() {
+  setup () {
     const store = useStore()
     const multipleTableRef = ref()
     const multipleSelection = ref([])
@@ -103,14 +144,14 @@ export default {
       state.isSearch = true
       getTableData()
     }
-    const toReset=()=>{
-      state.isSearch=false
-      state.searchValue=''
-      state.optionValue=''
-      state.currentPage=1
-      state.pageSize=10
-      state.sortOrder='ascending'
-      state.sortProp=''
+    const toReset = () => {
+      state.isSearch = false
+      state.searchValue = ''
+      state.optionValue = ''
+      state.currentPage = 1
+      state.pageSize = 10
+      state.sortOrder = 'ascending'
+      state.sortProp = ''
       getTableData()
     }
     //表格单行操作

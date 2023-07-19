@@ -1,23 +1,34 @@
 <template>
   <div class="login-container">
 
-    <el-form class="login-form" label-position="top">
+    <el-form class="login-form"
+             label-position="top">
       <h2 class="title">登录</h2>
       <el-form-item label="用户名">
-        <el-input v-model="loginName" placeholder="请输入用户名"></el-input>
+        <el-input v-model="loginName"
+                  placeholder="请输入用户名"></el-input>
       </el-form-item>
       <el-form-item label="密码">
-        <el-input type="password" v-model="password" placeholder="请输入密码"></el-input>
+        <el-input type="password"
+                  v-model="password"
+                  placeholder="请输入密码"></el-input>
       </el-form-item>
       <el-form-item label="验证码">
-        <el-input type="text" v-model="identifyCode" placeholder="请输入验证码"></el-input>
-        <img :src="captchaImage" @click="refreshCaptcha" style="margin: auto; margin-top: 10px;" />
+        <el-input type="text"
+                  v-model="identifyCode"
+                  placeholder="请输入验证码"></el-input>
+        <img :src="captchaImage"
+             @click="refreshCaptcha"
+             style="margin: auto; margin-top: 10px;" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="login" style="margin: auto;">登录</el-button>
+        <el-button type="primary"
+                   @click="login"
+                   style="margin: auto;">登录</el-button>
       </el-form-item>
       <el-row style="text-align: center;margin-top: -10px;">
-        <el-link type="primary" style="margin: auto;">忘记密码?</el-link>
+        <el-link type="primary"
+                 style="margin: auto;">忘记密码?</el-link>
       </el-row>
     </el-form>
   </div>
@@ -30,7 +41,7 @@ import { useStore } from 'vuex'
 import { ElMessage } from 'element-plus'
 import router from "@/vueRouter/main";
 export default {
-  setup() {
+  setup () {
     let loginName = ref("");
     let password = ref("");
     let identifyCode = ref("");
@@ -40,7 +51,7 @@ export default {
       refreshCaptcha();
     });
 
-    function login() {
+    function login () {
       // 提交登录请求
       let loginName1 = loginName.value
       let password1 = password.value
@@ -75,7 +86,7 @@ export default {
 
 
 
-    function refreshCaptcha() {
+    function refreshCaptcha () {
       // 刷新验证码
       captchaImage.value = 'http://localhost:8080/identifyImage?' + Date.now();
     }

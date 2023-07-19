@@ -9,8 +9,12 @@
       <el-container>
         <el-aside width="250px"> <el-row class="tac">
             <el-col :span="12">
-              <el-menu default-active="/main/proctormsg" class="el-menu-vertical-demo" @open="handleOpen"
-                @close="handleClose" :router="true" style="width: 250px;">
+              <el-menu default-active="/main/proctormsg"
+                       class="el-menu-vertical-demo"
+                       @open="handleOpen"
+                       @close="handleClose"
+                       :router="true"
+                       style="width: 250px;">
                 <el-sub-menu index="1">
                   <template #title>
                     <span>基本信息管理</span>
@@ -44,7 +48,7 @@
                     <el-menu-item index="/main/ereproctorsmsg">监考员-考场分配</el-menu-item>
 
                   </el-menu-item-group>
-                  
+
                 </el-sub-menu>
                 <el-menu-item index="/main/usermsg">
                   <span>用户账号管理</span>
@@ -74,7 +78,7 @@ export default defineComponent({
     ElMenuItemGroup,
     ElMenuItem,
   },
-  setup() {
+  setup () {
 
     const handleOpen = (key, keyPath) => {
       console.log(key, keyPath)

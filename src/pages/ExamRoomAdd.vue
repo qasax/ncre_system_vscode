@@ -1,21 +1,34 @@
 <template>
-  <el-page-header @back="goBack" style="border-bottom: 1px solid #ccc;height: 30px;padding-top: 10px">
+  <el-page-header @back="goBack"
+                  style="border-bottom: 1px solid #ccc;height: 30px;padding-top: 10px">
     <template #content>
       <span class=" text-large font-600 mr-3"> 考场添加 </span>
     </template>
   </el-page-header>
   <div style="width: 30%;margin: auto;">
-    <el-form style="margin-top: 50px;" ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="120px"
-      class="demo-ruleForm">
-      <el-form-item label="考场名称" prop="examRoomName">
-        <el-input v-model="ruleForm.examRoomName" type="text" autocomplete="off" />
+    <el-form style="margin-top: 50px;"
+             ref="ruleFormRef"
+             :model="ruleForm"
+             status-icon
+             :rules="rules"
+             label-width="120px"
+             class="demo-ruleForm">
+      <el-form-item label="考场名称"
+                    prop="examRoomName">
+        <el-input v-model="ruleForm.examRoomName"
+                  type="text"
+                  autocomplete="off" />
       </el-form-item>
-      <el-form-item label="座位数" prop="seatCount">
-        <el-input v-model="ruleForm.seatCount" type="text" autocomplete="off" />
+      <el-form-item label="座位数"
+                    prop="seatCount">
+        <el-input v-model="ruleForm.seatCount"
+                  type="text"
+                  autocomplete="off" />
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="submitForm(ruleFormRef)">提交</el-button>
+        <el-button type="primary"
+                   @click="submitForm(ruleFormRef)">提交</el-button>
         <el-button @click="resetForm(ruleFormRef)">重置</el-button>
       </el-form-item>
     </el-form>
@@ -29,7 +42,7 @@ import axios from 'axios'
 import { ElMessageBox, ElMessage } from 'element-plus'
 axios.defaults.withCredentials = true;
 export default {
-  setup() {
+  setup () {
     //页头返回功能
     const goBack = function () {
       router.push('/main/examroommsg')
