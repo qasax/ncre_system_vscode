@@ -11,11 +11,21 @@
         <el-input v-model="ruleForm.examName" type="text" autocomplete="off" />
       </el-form-item>
       <el-form-item label="考试日期" prop="examDate">
-        <el-input v-model="ruleForm.examDate" type="text" autocomplete="off" />
+        <div class="block">
+          <el-date-picker
+            v-model="ruleForm.examDate"
+            type="date"
+            placeholder="Pick a day"
+            value-format="YYYY-MM-DD"
+          />
+        </div>
       </el-form-item>
 
-      <el-form-item label="考试时间" prop="examTime">
-        <el-input v-model="ruleForm.examTime" />
+      <el-form-item label="考试时间段" prop="examTime">
+        <div class="example-basic">
+          <el-time-picker v-model="startTime" placeholder="开始时间"  value-format="HH:mm:ss" />
+          <el-time-picker v-model="endTime" placeholder="结束时间"  value-format="HH:mm:ss" />
+        </div>
       </el-form-item>
       <el-form-item label="考试地点" prop="examLocation">
         <el-input v-model="ruleForm.examLocation" type="text" autocomplete="off" />
@@ -30,7 +40,7 @@
 
 <script>
 import router from '@/vueRouter/main'
-import { reactive, ref } from 'vue'
+import {  reactive, ref, watch } from 'vue'
 import axios from 'axios'
 import { ElMessageBox, ElMessage } from 'element-plus'
 axios.defaults.withCredentials = true;
@@ -42,19 +52,24 @@ export default {
     }
     //表单数据
     const ruleFormRef = ref(null)
+    const startTime = ref()
+    const endTime=ref()
     let ruleForm = reactive({
       examName: '',
       examDate: '',
       examTime: '',
       examLocation: ''
     })
-
+    //监视属性 计算考试时间
+    const getExamTime=watch(endTime,()=>{
+      ruleForm.examTime= startTime.value+"--"+endTime.value
+    })
     //表单验证规则
     const rules = reactive(
       {
         examName: [{ required: true, message: '请输入考试名称', trigger: 'blur' }],
         examDate: [{ required: true, message: '请输入考试日期', trigger: 'blur' }],
-        examTime: [{ required: true, message: '请输入考试时间', trigger: 'chanage' },],
+        examTime: [{ required: true, message: '请选择考试时间', trigger: 'blur' },],
         examLocation: [{ required: true, message: '请输入考试地点', trigger: 'blur' },],
       }
     )
@@ -118,7 +133,9 @@ export default {
       ruleForm,
       rules,
       submitForm,
-      resetForm
+      resetForm,
+      getExamTime,
+      startTime,endTime,
     }
   }
 }

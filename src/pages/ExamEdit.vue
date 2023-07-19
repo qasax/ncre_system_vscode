@@ -11,11 +11,19 @@
         <el-input v-model="ruleForm.examName" type="text" autocomplete="off" />
       </el-form-item>
       <el-form-item label="考试日期" prop="examDate">
-        <el-input v-model="ruleForm.examDate" type="text" autocomplete="off" />
+        <div class="block">
+          <el-date-picker
+            v-model="ruleForm.examDate"
+            type="date"
+            placeholder="Pick a day"
+            value-format="YYYY-MM-DD"
+          />
+        </div>
       </el-form-item>
 
       <el-form-item label="考试时间" prop="examTime">
-        <el-input v-model.number="ruleForm.examTime" />
+        <el-time-picker v-model="startTime" placeholder="开始时间"  value-format="HH:mm:ss" />
+        <el-time-picker v-model="endTime" placeholder="结束时间"  value-format="HH:mm:ss" />
       </el-form-item>
       <el-form-item label="考试地点" prop="examLocation">
         <el-input v-model="ruleForm.examLocation" type="text" autocomplete="off" />
@@ -30,7 +38,7 @@
 
 <script>
 import router from '@/vueRouter/main'
-import { reactive, ref } from 'vue'
+import { reactive, ref ,watch} from 'vue'
 import { useStore } from 'vuex'
 import axios from 'axios'
 import { ElMessageBox, ElMessage } from 'element-plus'
@@ -48,7 +56,19 @@ export default {
     })
     ruleForm = store.getters.getEntity
     console.log(ruleForm)
+    //分割时间段---假设time的初始值为"16:09:40--19:09:40" 
+    const startTime=ref()
+    const endTime = ref()
+    const examTimeArr = ruleForm.examTime.split("--");
+    if (examTimeArr) {
+    startTime.value = examTimeArr[0].trim();
+    endTime.value = examTimeArr[1].trim();// 此时startTime的值为"16:09:40"，endTime的值为"19:09:40"
+      }
 
+      //监视属性 计算考试时间
+      const getExamTime=watch(endTime,()=>{
+      ruleForm.examTime= startTime.value+"--"+endTime.value
+    })
     //表单验证规则
     const rules = reactive(
       {
@@ -118,7 +138,10 @@ export default {
       ruleForm,
       rules,
       submitForm,
-      resetForm
+      resetForm,
+      startTime,
+      endTime,
+      getExamTime
     }
   }
 }
