@@ -22,11 +22,11 @@
   <el-table ref="multipleTableRef" :data="tableData" style="width: 100%" @selection-change="handleSelectionChange"
     @sort-change="handleSortChange" v-loading="loading" element-loading-text="Loading..." :element-loading-spinner="svg"
     element-loading-svg-view-box="-10, -10, 50, 50" element-loading-background="rgba(122, 122, 122, 0.8)" :default-sort="{prop: 'userID', order: 'ascending'}">
-    <el-table-column type="selection" width="120" />
-    <el-table-column label="序号" property="userID" width="120" sortable="custom"></el-table-column>
-    <el-table-column property="username" label="用户名" width="120" />
-    <el-table-column property="password" label="密码" width="120" />
-    <el-table-column property="userType" label="用户类型" width="120" />
+    <el-table-column type="selection"  />
+    <el-table-column label="序号" property="userID" sortable="custom"></el-table-column>
+    <el-table-column property="username" label="用户名"  />
+    <el-table-column property="password" label="密码"  />
+    <el-table-column property="userType" label="用户类型" />
     <el-table-column label="操作" width="510">
       <template #default="{ row }">
         <el-button link type="primary" size="small">详细</el-button>

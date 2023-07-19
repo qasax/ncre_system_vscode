@@ -28,11 +28,11 @@
       <el-table-column property="seatCount" label="座位数" />
       <el-table-column property="proctors[0].teacherName" label="监考员1" />
       <el-table-column property="proctors[1].teacherName" label="监考员2" />
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="450px">
         <template #default="{ row }">
           <el-button link type="primary" size="small">查看该场次考场的全部考生</el-button>
           <el-button link type="primary" size="small" @click="handleClickEdit(row)">修改场次负责监考员</el-button>
-          <el-button link type="primary" size="small" @click="handleClickDelete(row)">删除</el-button>
+          <el-button link type="primary" size="small" @click="handleClickDelete(row)">清空该考场监考员</el-button>
         </template>
       </el-table-column>
     </el-table>

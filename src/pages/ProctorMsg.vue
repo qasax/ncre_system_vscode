@@ -22,15 +22,15 @@
   <el-table ref="multipleTableRef" :data="tableData" style="width: 100%" @selection-change="handleSelectionChange"
     @sort-change="handleSortChange" v-loading="loading" element-loading-text="Loading..." :element-loading-spinner="svg"
     element-loading-svg-view-box="-10, -10, 50, 50" element-loading-background="rgba(122, 122, 122, 0.8)" :default-sort="{prop: 'proctorID', order: 'ascending'}">
-    <el-table-column type="selection" width="120" />
-    <el-table-column label="序号" property="proctorID" width="120" sortable="custom"></el-table-column>
-    <el-table-column property="teacherName" label="姓名" width="120" />
-    <el-table-column property="gender" label="性别" width="120" />
-    <el-table-column property="age" label="年龄" width="120" />
-    <el-table-column property="phoneNumber" label="手机号" width="120" />
-    <el-table-column property="email" label="邮箱" width="120" />
-    <el-table-column property="username" label="用户名" width="120" />
-    <el-table-column fixed="right" label="操作" width="260">
+    <el-table-column type="selection"/>
+    <el-table-column label="序号" property="proctorID"  sortable="custom"></el-table-column>
+    <el-table-column property="teacherName" label="姓名" />
+    <el-table-column property="gender" label="性别"  />
+    <el-table-column property="age" label="年龄" />
+    <el-table-column property="phoneNumber" label="手机号"  />
+    <el-table-column property="email" label="邮箱"  />
+    <el-table-column property="username" label="用户名"  />
+    <el-table-column fixed="right" label="操作" >
       <template #default="{ row }">
         <el-button link type="primary" size="small">详细</el-button>
         <el-button link type="primary" size="small" @click="handleClickEdit(row)">编辑</el-button>

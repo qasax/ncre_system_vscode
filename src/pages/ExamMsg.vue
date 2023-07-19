@@ -23,13 +23,13 @@
   <el-table ref="multipleTableRef" :data="tableData" style="width: 100%" @selection-change="handleSelectionChange"
     @sort-change="handleSortChange" v-loading="loading" element-loading-text="Loading..." :element-loading-spinner="svg"
     element-loading-svg-view-box="-10, -10, 50, 50" element-loading-background="rgba(122, 122, 122, 0.8)" :default-sort="{prop: 'examID', order: 'ascending'}">
-    <el-table-column type="selection" width="120" />
-    <el-table-column label="序号" property="examID" width="120" sortable="custom"></el-table-column>
-    <el-table-column property="examName" label="考试名称" width="120" />
-    <el-table-column property="examDate" label="考试日期" width="120" />
-    <el-table-column property="examTime" label="考试时间" width="120" />
-    <el-table-column property="examLocation" label="考试地点" width="120" />
-    <el-table-column label="操作" width="510">
+    <el-table-column type="selection"  />
+    <el-table-column label="序号" property="examID"  sortable="custom"></el-table-column>
+    <el-table-column property="examName" label="考试名称"  />
+    <el-table-column property="examDate" label="考试日期" />
+    <el-table-column property="examTime" label="考试时间" />
+    <el-table-column property="examLocation" label="考试地点"  />
+    <el-table-column label="操作" >
       <template #default="{ row }">
         <el-button link type="primary" size="small">详细</el-button>
         <el-button link type="primary" size="small" @click="handleClickEdit(row)">编辑</el-button>
