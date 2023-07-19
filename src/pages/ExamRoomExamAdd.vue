@@ -15,7 +15,7 @@
         </el-form-item>
 
         <el-form-item label="考场名称" prop="examRoomID">
-            <el-select  v-model="ruleForm.examRoomID" placeholder="请选择">
+            <el-select  v-model="ruleForm.examRoomID" placeholder="请选择" no-data-text="无可用考场">
                 <el-option v-for="(examRoom, index) in examRooms" :key="index" :label="examRoom.examRoomName" :value="examRoom.examRoomID" >
                 </el-option>
             </el-select>

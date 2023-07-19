@@ -8,13 +8,13 @@
       <el-form style="margin-top: 50px;" ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="120px"
         class="demo-ruleForm">
           <el-form-item label="监考员1" prop="proctors[0].proctorID">
-              <el-select  v-model="ruleForm.proctors[0].proctorID">
+              <el-select  v-model="ruleForm.proctors[0].proctorID" no-data-text="无可用监考员">
                 <el-option v-for="(proctor, index) in proctors" :key="index" :label="proctor.teacherName" :value="proctor.proctorID" ></el-option>
                 <el-option :label="teacherName1" :value="proctorID1"  v-if="proctorID1"></el-option>
               </el-select>
              </el-form-item>
              <el-form-item label="监考员2" prop="proctors[1].proctorID">
-              <el-select  v-model="ruleForm.proctors[1].proctorID">
+              <el-select  v-model="ruleForm.proctors[1].proctorID"  no-data-text="无可用监考员">
                 <el-option v-for="(proctor, index) in proctors" :key="index" :label="proctor.teacherName" :value="proctor.proctorID" ></el-option>
                 <el-option :label="teacherName2" :value="proctorID2" v-if="proctorID2"></el-option>
               </el-select>

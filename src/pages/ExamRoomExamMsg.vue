@@ -164,7 +164,7 @@
   
       //表格上部按钮
       const addExamRoomMsg = () => {
-        router.push('/main/examroomexameadd')
+        router.push('/main/examroomexamadd')
       }
       const deleteSelectAll = () => {
         console.log(multipleSelection.value)

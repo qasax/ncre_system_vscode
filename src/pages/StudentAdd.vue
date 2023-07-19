@@ -11,7 +11,7 @@
         <el-input v-model="ruleForm.name" type="text" autocomplete="off" />
       </el-form-item>
       <el-form-item label="用户名(可选)" prop="username">
-        <el-select v-model="ruleForm.username" placeholder="请选择">
+        <el-select v-model="ruleForm.username" placeholder="请选择"  no-data-text="无可用账户">
           <el-option v-for="(option, index) in options" :key="index" :label="option.username" :value="option.username"></el-option>
         </el-select>
       </el-form-item>
