@@ -23,8 +23,8 @@
 
       <el-form-item label="考试时间段" prop="examTime">
         <div class="example-basic">
-          <el-time-picker v-model="startTime" placeholder="开始时间"  value-format="HH:mm:ss" />
-          <el-time-picker v-model="endTime" placeholder="结束时间"  value-format="HH:mm:ss" />
+          <el-time-picker v-model="startTime" placeholder="开始时间"  value-format="HH:mm" format="HH:mm" />
+          <el-time-picker v-model="endTime" placeholder="结束时间"  value-format="HH:mm" format="HH:mm"/>
         </div>
       </el-form-item>
       <el-form-item label="考试地点" prop="examLocation">
