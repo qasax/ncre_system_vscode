@@ -14,9 +14,14 @@
         <el-button type="primary" @click="toSearch">查询</el-button>
         <el-button type="primary" @click="toReset">重置</el-button>
     </div>
+    <div style="margin-top: 20px;margin-bottom: 20px;margin-left: 20px;">
+      <el-button @Click="deleteSelectAll">批量清空监考员信息</el-button>
+      <el-button @click="toggleSelection()">清除选中</el-button>
+    </div>
     <el-table ref="multipleTableRef" :data="tableData" style="width: 100%" 
-      @sort-change="handleSortChange" v-loading="loading" element-loading-text="Loading..." :element-loading-spinner="svg"
+      @sort-change="handleSortChange" v-loading="loading" element-loading-text="Loading..." :element-loading-spinner="svg" @selection-change="handleSelectionChange"
       element-loading-svg-view-box="-10, -10, 50, 50" element-loading-background="rgba(122, 122, 122, 0.8)" :default-sort="{prop: 'ereID', order: 'ascending'}">
+      <el-table-column type="selection"  />
       <el-table-column label="序号" property="ereID" sortable="custom" />
       <el-table-column property="examID" label="考试编号" />
       <el-table-column label="考场序号" property="examRoomID" />
@@ -47,7 +52,7 @@
   
   <script>
   import { onMounted, ref, reactive } from 'vue'
-  import { ElTable, ElMessage } from 'element-plus'
+  import { ElTable, ElMessage,ElMessageBox } from 'element-plus'
   import axios from 'axios'
   import router from '@/vueRouter/main';
   import { useStore } from 'vuex';
@@ -56,6 +61,7 @@
     setup() {
       const store = useStore()
       const multipleTableRef = ref()
+      const multipleSelection = ref([])
       const tableData = ref([])
       //分页依据相关数据
       const state = reactive({
@@ -111,14 +117,110 @@
         state.sortProp='ereID'
         getTableData()
       }
+        //表格上部按钮
+    const deleteSelectAll = () => {
+      console.log(multipleSelection.value)
+      const selectList = multipleSelection.value
+      ElMessageBox.confirm(
+        '是否确定进行删除?',
+        '警告',
+        {
+          confirmButtonText: '是',
+          cancelButtonText: '否',
+          type: 'warning',
+        }
+      )
+        .then(() => {
+          Promise.all(selectList.map((select) => {
+            console.log(select.ereID);
+            return axios.get('http://localhost:8080/ereProctors/deleteOne', {
+              params: {
+                ereID: select.ereID,
+              }
+            });
+          })).then(() => {
+            console.log('All requests completed');
+            ElMessage({
+              type: 'success',
+              message: '批量删除成功',
+            })
+            getTableData()
+            // do other stuff here
+          }).catch((error) => {
+            console.log('Some requests failed:', error);
+            ElMessage({
+              type: 'error',
+              message: error.message,
+            })
+          });
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: '取消删除',
+          })
+        })
+
+    }
+    const toggleSelection = (rows) => {
+      if (rows) {
+        rows.forEach((row) => {
+          multipleTableRef.value.toggleRowSelection(row, undefined)
+        })
+      } else {
+        multipleTableRef.value.clearSelection()
+      }
+    }
       //表格单行操作
       const handleClickEdit = (val) => {
         console.log(val)
         store.commit('changeEntity', val)
         router.push('/main/ereproctorsedit')
       }
+      const handleClickDelete = (val) => {
+      console.log(val)
+      ElMessageBox.confirm(
+        '是否确定进行删除?',
+        '警告',
+        {
+          confirmButtonText: '是',
+          cancelButtonText: '否',
+          type: 'warning',
+        }
+      )
+        .then(() => {
+          axios.get('http://localhost:8080/ereProctors/deleteOne', {
+            params: {
+              ereID: val.ereID,
+            }
+          }).then((response) => {
+            console.log(response.data)
+            ElMessage({
+              type: 'success',
+              message: '删除成功',
+            })
+            getTableData()
+          }).catch((error) => {
+            ElMessage({
+              type: 'error',
+              message: error.message,
+            })
+
+          })
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: '取消删除',
+          })
+        })
+
+    }
   
       //el表格固定api
+      const handleSelectionChange = (val) => {
+      multipleSelection.value = val
+    }
       const handleSortChange = (val) => {
         console.log(val)
         state.sortProp = val.prop
@@ -186,7 +288,11 @@
         svg,
         goBack,
         handleClickEdit,
-        toReset
+        toReset,
+        handleClickDelete,
+        handleSelectionChange,
+        deleteSelectAll,
+        toggleSelection
       }
     },
     components: {
