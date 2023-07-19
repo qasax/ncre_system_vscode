@@ -35,7 +35,7 @@
       <el-table-column property="proctors[1].teacherName" label="监考员2" />
       <el-table-column label="操作" width="450px">
         <template #default="{ row }">
-          <el-button link type="primary" size="small">查看该场次考场的全部考生</el-button>
+          <el-button link type="primary" size="small" @click="handleClickScan(row)" >查看该场次考场的全部考生</el-button>
           <el-button link type="primary" size="small" @click="handleClickEdit(row)">修改场次负责监考员</el-button>
           <el-button link type="primary" size="small" @click="handleClickDelete(row)">清空该考场监考员</el-button>
         </template>
@@ -48,6 +48,24 @@
         layout="total, sizes, prev, pager, next, jumper" :total="state.total" @size-change="handleSizeChange"
         @current-change="handleCurrentChange" />
     </div>
+    <el-dialog v-model="dialogTableVisible" title="本考场全部考生">
+      <el-table :data="studentTableData"  v-loading="loadingStudent" element-loading-text="Loading..." :element-loading-spinner="svg" @sort-change="handleSortChangeStudent"
+      :default-sort="{prop: 'seatID', order: 'ascending'}"  >
+   <el-table-column label="学号" property="studentID"></el-table-column>
+   <el-table-column property="seatID" label="座位号" sortable="custom"/>
+    <el-table-column property="name" label="姓名" />
+    <el-table-column property="gender" label="性别" />
+    <el-table-column property="age" label="年龄" />
+    <el-table-column property="phoneNumber" label="手机号" />
+    <el-table-column property="email" label="邮箱" />
+      </el-table> 
+      <div class="demo-pagination-block" style="margin-top: 10px;margin-left: 200px; margin-bottom: 20px;">
+        <el-pagination v-model:current-page="dialogState.currentPage" v-model:page-size="dialogState.pageSize"
+          :page-sizes="[10, 20, 30, 40]" :small="dialogState.small" :disabled="dialogState.disabled" :background="dialogState.background"
+          layout="total, sizes, prev, pager, next, jumper" :total="dialogState.total" @size-change="handleSizeChangeStudent"
+          @current-change="handleCurrentChangeStudent" />
+      </div>
+    </el-dialog>
   </template>
   
   <script>
@@ -63,6 +81,9 @@
       const multipleTableRef = ref()
       const multipleSelection = ref([])
       const tableData = ref([])
+      let studentTableData = ref([])
+      //弹出对话窗口参数
+      let dialogTableVisible=ref(false)
       //分页依据相关数据
       const state = reactive({
         currentPage: 1,
@@ -77,6 +98,23 @@
         searchValue: '',
         isSearch: false,
       })
+      //弹出窗口分页相关数据
+      let dialogState = reactive({
+        currentPage: 1,
+        pageSize: 10,
+        small: false,
+        background: true,
+        disabled: false,
+        total: 0,
+        sortProp: 'seatID',
+        sortOrder: 'ascending',
+        optionValue: '',
+        searchValue: '',
+        isSearch: false,
+        examID:'',
+        examRoomID:'',
+
+      })
       const serchOptions = [
         {
           value: '序号',
@@ -88,6 +126,7 @@
         },
       ]
       const loading = ref(true)
+      const loadingStudent=ref(true)
       const svg = `
           <path class="path" d="
             M 30 15
@@ -172,6 +211,14 @@
       }
     }
       //表格单行操作
+      const handleClickScan=(val)=>{
+        console.log(val)
+        loadingStudent.value=true
+        dialogTableVisible.value=true
+        dialogState.examID=val.examID
+        dialogState.examRoomID=val.examRoomID
+        getTableDataStuent()
+      }
       const handleClickEdit = (val) => {
         console.log(val)
         store.commit('changeEntity', val)
@@ -227,6 +274,7 @@
         state.sortOrder = val.order
         getTableData()
       }
+      //el pageINfo 分页固定api
       const handleSizeChange = (val) => {
         console.log(`${val} items per page`)
         state.pageSize = val;
@@ -236,7 +284,26 @@
       const handleCurrentChange = (val) => {
         console.log(`current page: ${val}`)
         state.currentPage = val;
-        getTableData()
+        handleClickScan()
+      }
+      //el 表格固定api 学生信息展示
+      const handleSortChangeStudent = (val) => {
+        console.log(val)
+        dialogState.sortProp = val.prop
+        dialogState.sortOrder = val.order
+        getTableDataStuent()
+      }
+        //el pageINfo 分页固定api 学生信息显示
+      const handleSizeChangeStudent = (val) => {
+        console.log(`${val} items per page`)
+        dialogState.pageSize = val;
+        getTableDataStuent()
+      }
+  
+      const handleCurrentChangeStudent = (val) => {
+        console.log(`current page: ${val}`)
+        dialogState.currentPage = val;
+        getTableDataStuent()
       }
       //向数据库请求数据的基础方法
       const getTableData = function () {
@@ -265,9 +332,23 @@
               //state.isSearch = false
             }
           }, 300)
-  
-  
-  
+        })
+      }
+      const getTableDataStuent=()=>{
+        loadingStudent.value = true
+        axios.get("http://localhost:8080/student/selectStudentOfExamRoom",{params:{
+          pageNum:dialogState.currentPage,
+          pageSize:dialogState.pageSize,
+          examID:dialogState.examID,
+          examRoomID:dialogState.examRoomID,
+          sortProp:dialogState.sortProp,
+          sortOrder: dialogState.sortOrder === "ascending" ? "asc" : "desc",
+        }}).then((response)=>{
+          studentTableData.value=response.data.list
+          dialogState.total = response.data.list.length
+          setTimeout(() => {
+            loadingStudent.value = false
+          }, 300)
         })
       }
       onMounted(() => {
@@ -280,11 +361,15 @@
         state,
         handleSizeChange,
         handleCurrentChange,
+        handleSizeChangeStudent,
+        handleCurrentChangeStudent,
+        handleSortChangeStudent,
         getTableData,
         handleSortChange,
         serchOptions,
         toSearch,
         loading,
+        loadingStudent,
         svg,
         goBack,
         handleClickEdit,
@@ -292,7 +377,11 @@
         handleClickDelete,
         handleSelectionChange,
         deleteSelectAll,
-        toggleSelection
+        toggleSelection,
+        dialogTableVisible,
+        handleClickScan,
+        studentTableData,
+        dialogState
       }
     },
     components: {
