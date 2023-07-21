@@ -5,14 +5,19 @@
       <span class="text-large font-600 mr-3"> 考生报名管理 </span>
     </template>
   </el-page-header>
-  <el-button @click="setSignUpStatus(true)"
-             :disabled="SignUpStatus||SignUpOverStatus">开始报名</el-button>
-  <el-button @click="setSignUpStatus(false)"
-             :disabled="!SignUpStatus">结束报名</el-button>
-  <el-button @click="autoAssignStudent"
-             :disabled="AssignStudentStatus">自动分配考生</el-button>
-  <el-button @click="autoAssignProctor"
-             :disabled="AssignProctorStatus">自动分配监考员</el-button>
+  <div style="text-align:center;margin-top:100px"> <el-button @click="setSignUpStatus(true)"
+               :disabled="SignUpStatus||SignUpOverStatus">开始报名</el-button>
+    <el-button @click="setSignUpStatus(false)"
+               :disabled="!SignUpStatus">结束报名</el-button>
+    <el-button @click="autoAssignStudent"
+               :disabled="AssignStudentStatus">自动分配考生</el-button>
+    <el-button @click="autoAssignProctor"
+               :disabled="AssignProctorStatus">自动分配监考员</el-button>
+    <div v-if="SignUpStatus==false&&AssignStudentStatus&&AssignProctorStatus&&SignUpOverStatus">
+      <h1>报名工作以及分配工作已经完成</h1>
+    </div>
+  </div>
+
 </template>
 
 <script>

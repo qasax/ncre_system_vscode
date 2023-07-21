@@ -28,7 +28,14 @@
 
       <el-form-item label="用户类型"
                     prop="userType">
-        <el-input v-model.number="ruleForm.userType" />
+        <el-select v-model="ruleForm.userType">
+          <el-option label="管理员"
+                     value="admin"></el-option>
+          <el-option label="监考员"
+                     value="proctor"></el-option>
+          <el-option label="考生"
+                     value="student"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary"
@@ -64,7 +71,7 @@ export default {
       {
         username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
         password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-        userType: [{ required: true, message: '请输入用户类型', trigger: 'chanage' },],
+        userType: [{ required: true, message: '请选择用户类型', trigger: 'chanage' },],
       }
     )
 

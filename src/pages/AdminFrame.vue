@@ -4,8 +4,9 @@
       <el-header style="border-bottom: 1px solid #ccc; height: 40px;text-align: left;margin-top: 10px;">
         <el-icon size="25">
           <Monitor />
-        </el-icon>
+        </el-icon>计算机等级考试报名后台系统
       </el-header>
+
       <el-container>
         <el-aside width="250px"> <el-row class="tac">
             <el-col :span="12">
@@ -46,16 +47,8 @@
                   <el-menu-item-group title="考试综合信息管理">
                     <el-menu-item index="/main/examroomexammsg">考试-考场分配</el-menu-item>
                     <el-menu-item index="/main/ereproctorsmsg">监考员-考场分配</el-menu-item>
-
                   </el-menu-item-group>
-
                 </el-sub-menu>
-                <el-menu-item index="/main/usermsg">
-                  <span>用户账号管理</span>
-                </el-menu-item>
-                <el-menu-item index="4">
-                  <span>Navigator Four</span>
-                </el-menu-item>
               </el-menu>
             </el-col>
           </el-row></el-aside>
