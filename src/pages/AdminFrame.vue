@@ -41,7 +41,7 @@
                     <span>考试管理</span>
                   </template>
                   <el-menu-item-group title="报名管理">
-                    <el-menu-item index="/main/">报名管理</el-menu-item>
+                    <el-menu-item index="/main/autoassignstudent">报名管理</el-menu-item>
                   </el-menu-item-group>
                   <el-menu-item-group title="考试综合信息管理">
                     <el-menu-item index="/main/examroomexammsg">考试-考场分配</el-menu-item>

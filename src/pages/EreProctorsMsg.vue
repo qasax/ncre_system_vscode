@@ -390,7 +390,7 @@ export default {
       }).then(response => {
         response.data
         tableData.value = response.data.list
-        state.total = response.data.list.length
+        state.total = response.data.total
         setTimeout(() => {
           loading.value = false
           if (state.isSearch == true) {
