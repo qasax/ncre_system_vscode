@@ -22,6 +22,9 @@ import ExamRoomExamEdit from '../pages/ExamRoomExamEdit'
 import EreProctorsMsg from '../pages/EreProctorsMsg'
 import EreProctorsEdit from '../pages/EreProctorsEdit'
 import AutoAssignStudent from '../pages/AutoAssignStudent'
+import AdminMsg from '../pages/AdminMsg.vue'
+import AdminEdit from '../pages/AdminEdit.vue'
+
 import { useStore } from 'vuex'
 import axios from 'axios'
 axios.defaults.withCredentials = true
@@ -55,21 +58,34 @@ const router = createRouter({
         { path: 'ereproctorsmsg', component: EreProctorsMsg },
         { path: 'ereproctorsedit', component: EreProctorsEdit },
         { path: 'autoassignstudent', component: AutoAssignStudent },
+        { path: 'adminMsg', component: AdminMsg },
+        { path: 'adminEdit', component: AdminEdit },
       ],
     },
   ],
 })
-router.beforeEach(() => {
+router.beforeEach((to, from, next) => {
   const store = useStore()
+  console.log(to)
+  console.log(from)
   axios
     .get('http://localhost:8080/sessionState')
     .then((response) => {
       console.log(response.data)
       if (response.data === false) {
-        router.push('/login')
         store.commit('changeIsLogin', false)
+        if (to.fullPath === '/login') {
+          next()
+        } else {
+          next('/login')
+        }
       } else {
         store.commit('changeIsLogin', true)
+        if (to.fullPath === '/login') {
+          next('/main')
+        } else {
+          next()
+        }
       }
       // 处理登录成功逻辑
     })
