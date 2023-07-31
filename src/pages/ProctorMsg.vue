@@ -30,6 +30,25 @@
     <el-button @Click="addStudentMsg()">添加 </el-button>
     <el-button @Click="deleteSelectAll">批量删除</el-button>
     <el-button @click="toggleSelection()">清除选中</el-button>
+    <el-button @click="window.location.href='http://localhost:8080/file/proctorDown'">表格导出</el-button>
+    <el-upload ref="upload"
+               class="upload-demo"
+               action="http://localhost:8080/file/proctorUpload"
+               :limit="1"
+               :on-exceed="handleExceed"
+               :auto-upload="false"
+               accept=".xlsx"
+               style="display: inline-block;margin-left: 15px;">
+      <template #trigger>
+        <el-button type="primary">选择导入表格</el-button>
+      </template>
+      <el-button class="ml-3"
+                 type="success"
+                 @click="submitUpload"
+                 style="margin-left: 15px;">
+        表格上传
+      </el-button>
+    </el-upload>
   </div>
   <el-table ref="multipleTableRef"
             :data="tableData"
@@ -96,6 +115,7 @@ import { onMounted, ref, reactive } from 'vue'
 import { ElTable, ElMessageBox, ElMessage } from 'element-plus'
 import axios from 'axios'
 import router from '@/vueRouter/main';
+import { genFileId } from 'element-plus'
 import { useStore } from 'vuex';
 axios.defaults.withCredentials = true;
 export default {
@@ -203,7 +223,41 @@ export default {
       router.push('/main/proctoredit')
     }
 
-    //表格下部按钮
+    //表格上部按钮
+    const upload = ref(null);
+
+    const handleExceed = (files) => {
+      upload.value.clearFiles();
+      const file = files[0];
+      file.uid = genFileId();
+      upload.value.handleStart(file);
+    };
+
+    const submitUpload = () => {
+      ElMessageBox.confirm(
+        '是否确定进行上传?',
+        '警告',
+        {
+          confirmButtonText: '是',
+          cancelButtonText: '否',
+          type: 'warning',
+        }
+      )
+        .then(() => {
+          upload.value.submit();
+          ElMessage({
+            type: 'success',
+            message: '上传成功',
+          })
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: '取消上传',
+          })
+        })
+
+    };
     const addStudentMsg = () => {
       router.push('/main/proctoradd')
     }
@@ -337,7 +391,11 @@ export default {
       goBack,
       handleClickEdit,
       addStudentMsg,
-      toReset
+      toReset,
+      window,
+      upload,
+      submitUpload,
+      handleExceed
     }
   },
   components: {
