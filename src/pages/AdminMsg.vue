@@ -136,7 +136,7 @@ export default {
     //上传成功后关闭dialog
     let dialogVisible = ref(false)
     const onSuccess = (uploadFile) => {
-      uploadFile
+      console.log(uploadFile)
       dialogVisible.value = false
       ElMessage({
         type: 'success',
