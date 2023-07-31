@@ -53,13 +53,11 @@ export default {
 
     function login () {
       // 提交登录请求
-      let loginName1 = loginName.value
-      let password1 = password.value
-      let identifyCode1 = identifyCode.value
       const requestBody = {
-        loginName: loginName1,
-        password: password1,
-        identifyCode: identifyCode1,
+        'loginName': loginName.value,
+        'password': password.value,
+        'identifyCode': identifyCode.value,
+        'userType': 'admin',
       }
       axios.defaults.withCredentials = true;
       axios.post('http://localhost:8080/login', requestBody)

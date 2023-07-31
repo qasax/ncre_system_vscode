@@ -9,11 +9,20 @@
             </el-icon>
           </li>
           <li style="float: left;margin-top: 20px;"><el-text>计算机等级考试报名后台系统</el-text></li>
-          <li @click="userClick"
-              style="float: right;margin-top: 20px;cursor: pointer">
-            <el-text class="mx-1">{{store.state.user.username}}
-            </el-text>
-          </li>
+          <el-dropdown style="float: right;margin-top: 22px;margin-right: 30px;margin-left: 5px;">
+            <span class="el-dropdown-link">
+              {{store.state.user.username}}
+              <el-icon class="el-icon--right">
+                <arrow-down />
+              </el-icon>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item @Click="userClick">个人资料</el-dropdown-item>
+                <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
           <li @click="userClick"
               style="cursor: pointer; float:right;margin-top: 10px;">
             <el-avatar :size="40"
@@ -21,7 +30,6 @@
                        src="http://localhost:8080/file/getImage" />
           </li>
         </ul>
-
       </el-header>
 
       <el-container>
@@ -79,9 +87,12 @@
 <script>
 import { defineComponent, onMounted } from 'vue'
 import { ElRow, ElCol, ElMenu, ElSubMenu, ElMenuItemGroup, ElMenuItem } from 'element-plus'
+import { ElMessageBox, ElMessage } from 'element-plus'
 import 'element-plus/dist/index.css'
 import { useStore } from 'vuex'
 import router from '@/vueRouter/main'
+import axios from 'axios'
+axios.defaults.withCredentials = true;
 export default defineComponent({
   components: {
     ElRow,
@@ -106,15 +117,54 @@ export default defineComponent({
     const userClick = () => {
       router.push('/main/adminMsg')
     }
+    //退出登录按钮
+    const logout = () => {
+
+      ElMessageBox.confirm(
+        '是否退出登录?',
+        '警告',
+        {
+          confirmButtonText: '是',
+          cancelButtonText: '否',
+          type: 'warning',
+        }
+      )
+        .then(() => {
+          axios.get('http://localhost:8080/logout').then((response) => {
+            console.log(response)
+            ElMessage({
+              type: 'info',
+              message: '退出成功',
+            })
+            setTimeout(() => {
+              window.location.reload()
+            }, 1000);
+          })
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: '取消退出',
+          })
+        })
+    }
 
     return {
       handleOpen,
       handleClose,
       store,
-      userClick
+      userClick,
+      logout
     }
   },
 })
 </script>
 
-<style></style>
+<style scoped>
+.example-showcase .el-dropdown-link {
+  cursor: pointer;
+  color: var(--el-color-primary);
+  display: flex;
+  align-items: center;
+}
+</style>
