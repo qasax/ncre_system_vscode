@@ -11,13 +11,16 @@
       <div class="block"
            style="cursor: pointer;">
         <div style="float: left;">
-          <el-avatar :size="50"
-                     src="http://localhost:8080/file/getImage"
-                     @Click="dialogVisible=true" />
+          <el-tooltip :content="tooltipContent"
+                      placement="top">
+            <el-avatar :size="50"
+                       src="http://localhost:8080/file/getImage"
+                       @Click="dialogVisible=true" />
+          </el-tooltip>
         </div>
-        <div style="float: left;">
-          <h2 style="margin-top: 16px;">{{store.state.user.username}}</h2>
-        </div>
+      </div>
+      <div style="float: left;">
+        <h2 style="margin-top: 16px;">{{store.state.user.username}}</h2>
       </div>
       <el-button style="float: right;"
                  @click="router.push('/main/adminEdit')">编辑资料</el-button>
@@ -125,6 +128,8 @@ import axios from 'axios';
 import router from '@/vueRouter/main'
 export default {
   setup () {
+    //头像悬浮文本
+    let tooltipContent = ref('点击更换头像')
     //页头
     const goBack = () => {
       router.push('/main')
@@ -169,7 +174,8 @@ export default {
       selectAdminByusername,
       userData,
       router,
-      goBack
+      goBack,
+      tooltipContent
     }
 
   }
