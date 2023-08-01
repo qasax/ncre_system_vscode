@@ -19,6 +19,7 @@
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item @Click="userClick">个人资料</el-dropdown-item>
+                <el-dropdown-item @click="router.push('/main/passwordEdit')">修改密码</el-dropdown-item>
                 <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </template>
@@ -154,7 +155,8 @@ export default defineComponent({
       handleClose,
       store,
       userClick,
-      logout
+      logout,
+      router
     }
   },
 })

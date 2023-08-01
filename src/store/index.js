@@ -19,7 +19,7 @@ const store = createStore({
       state.isLogin = value
     },
     changeUser (state) {
-      axios.get('http://localhost:8080/getUserName').then((response) => {
+      axios.get('http://localhost:8080/getSessionUser').then((response) => {
         if (response.data.username) {
           state.user = response.data
         }

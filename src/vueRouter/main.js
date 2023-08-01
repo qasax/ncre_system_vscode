@@ -24,7 +24,7 @@ import EreProctorsEdit from '../pages/EreProctorsEdit'
 import AutoAssignStudent from '../pages/AutoAssignStudent'
 import AdminMsg from '../pages/AdminMsg.vue'
 import AdminEdit from '../pages/AdminEdit.vue'
-
+import PasswordEdit from '../pages/PasswordEdit.vue'
 import { useStore } from 'vuex'
 import axios from 'axios'
 axios.defaults.withCredentials = true
@@ -60,6 +60,7 @@ const router = createRouter({
         { path: 'autoassignstudent', component: AutoAssignStudent },
         { path: 'adminMsg', component: AdminMsg },
         { path: 'adminEdit', component: AdminEdit },
+        { path: 'passwordEdit', component: PasswordEdit },
       ],
     },
   ],
