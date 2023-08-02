@@ -165,6 +165,12 @@ export default {
         }
       }).then((response) => {
         userData.value = response.data
+      }).catch(error => {
+        console.log('请求失败了', error.message)
+        ElMessage({
+          type: 'error',
+          message: error.response.data,
+        })
       })
     }
     return {

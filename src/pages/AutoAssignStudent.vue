@@ -64,7 +64,7 @@ export default {
               console.log('请求失败了', error.message)
               ElMessage({
                 type: 'error',
-                message: error.message,
+                message: error.response.data,
               })
             })
         })
@@ -99,7 +99,7 @@ export default {
               console.log('请求失败了', error.message)
               ElMessage({
                 type: 'error',
-                message: error.message,
+                message: error.response.data,
               })
             })
         })
@@ -148,6 +148,11 @@ export default {
               message: response.data,
             })
           }
+        }).catch((error) => {
+          ElMessage({
+            type: 'error',
+            message: error.response.data
+          })
         })
       }).catch(() => {
         ElMessage({

@@ -245,6 +245,12 @@ export default {
               params: {
                 ereID: select.ereID,
               }
+            }).catch(error => {
+              console.log('请求失败了', error.message)
+              ElMessage({
+                type: 'error',
+                message: error.response.data,
+              })
             });
           })).then(() => {
             console.log('All requests completed');
@@ -319,7 +325,7 @@ export default {
           }).catch((error) => {
             ElMessage({
               type: 'error',
-              message: error.message,
+              message: error.response.data,
             })
 
           })
@@ -420,6 +426,12 @@ export default {
         setTimeout(() => {
           loadingStudent.value = false
         }, 300)
+      }).catch(error => {
+        console.log('请求失败了', error.message)
+        ElMessage({
+          type: 'error',
+          message: error.response.data,
+        })
       })
     }
     onMounted(() => {

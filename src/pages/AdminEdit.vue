@@ -173,7 +173,7 @@ export default {
                   console.log('请求失败了', error.message)
                   ElMessage({
                     type: 'error',
-                    message: error.message,
+                    message: error.response.data,
                   })
                 })
             })
