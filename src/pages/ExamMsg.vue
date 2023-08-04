@@ -37,6 +37,7 @@
                action="http://localhost:8080/file/examUpload"
                :limit="1"
                :on-exceed="handleExceed"
+               :with-credentials="true"
                :auto-upload="false"
                accept=".xlsx"
                style="display: inline-block;margin-left: 15px;">

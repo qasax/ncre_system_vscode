@@ -93,6 +93,7 @@
                    :page-sizes="[10, 20, 30, 40]"
                    :small="state.small"
                    :disabled="state.disabled"
+                   :with-credentials="true"
                    :background="state.background"
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="state.total"

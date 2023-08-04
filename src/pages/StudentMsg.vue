@@ -37,6 +37,7 @@
                :limit="1"
                :on-exceed="handleExceed"
                :auto-upload="false"
+               :with-credentials="true"
                accept=".xlsx"
                style="display: inline-block;margin-left: 15px;">
       <template #trigger>

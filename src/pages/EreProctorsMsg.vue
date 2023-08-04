@@ -29,6 +29,7 @@
   <div style="margin-top: 20px;margin-bottom: 20px;margin-left: 20px;">
     <el-button @Click="deleteSelectAll">批量清空监考员信息</el-button>
     <el-button @click="toggleSelection()">清除选中</el-button>
+    <el-button @click="window.location.href='http://localhost:8080/file/ereProctorDown'">表格导出</el-button>
   </div>
   <el-table ref="multipleTableRef"
             :data="tableData"
@@ -98,7 +99,9 @@
                    @current-change="handleCurrentChange" />
   </div>
   <el-dialog v-model="dialogTableVisible"
-             title="本考场全部考生">
+             title="本考场全部考生"
+             style="text-align: center;">
+    <el-button @click="window.location.href='http://localhost:8080/file/studentOfExamRoomDown?examID='+dialogState.examID+'&examRoomID='+dialogState.examRoomID">表格导出</el-button>
     <el-table :data="studentTableData"
               v-loading="loadingStudent"
               element-loading-text="Loading..."
@@ -464,7 +467,8 @@ export default {
       dialogTableVisible,
       handleClickScan,
       studentTableData,
-      dialogState
+      dialogState,
+      window
     }
   },
   components: {
