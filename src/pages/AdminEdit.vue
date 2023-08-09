@@ -170,7 +170,7 @@ export default {
                   }, 1000);
                 })
                 .catch(error => {
-                  console.log('请求失败了', error.message)
+                  console.log('请求失败了', error.response.data)
                   ElMessage({
                     type: 'error',
                     message: error.response.data,

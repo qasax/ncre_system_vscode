@@ -6,14 +6,14 @@
     </template>
   </el-page-header>
   <div style="text-align:center;margin-top:100px"> <el-button @click="setSignUpStatus(true)"
-               :disabled="SignUpStatus||SignUpOverStatus">开始报名</el-button>
+               :disabled="SignUpStatus||SignUpOverStatus||AssignOverStatus">开始报名</el-button>
     <el-button @click="setSignUpStatus(false)"
-               :disabled="!SignUpStatus">结束报名</el-button>
+               :disabled="!SignUpStatus||AssignOverStatus">结束报名</el-button>
     <el-button @click="autoAssignStudent"
-               :disabled="AssignStudentStatus">自动分配考生</el-button>
+               :disabled="AssignStudentStatus||!SignUpOverStatus||AssignOverStatus">自动分配考生</el-button>
     <el-button @click="autoAssignProctor"
-               :disabled="AssignProctorStatus">自动分配监考员</el-button>
-    <div v-if="SignUpStatus==false&&AssignStudentStatus&&AssignProctorStatus&&SignUpOverStatus">
+               :disabled="!AssignStudentStatus||!SignUpOverStatus||AssignOverStatus">自动分配监考员</el-button>
+    <div v-if="SignUpStatus==false&&AssignOverStatus&&AssignStudentStatus&&AssignProctorStatus&&AssignOverStatus">
       <h1>报名工作以及分配工作已经完成</h1>
     </div>
   </div>
@@ -28,15 +28,18 @@ import { onMounted, ref } from 'vue';
 import { ElMessageBox, ElMessage } from 'element-plus';
 export default {
   setup () {
-    let SignUpStatus = ref();//从后台获取
-    let AssignStudentStatus = ref()//在分配完考生后才能分配监考员
-    let AssignProctorStatus = ref()//分配完考生后，分配考生按钮不可点击
-    let SignUpOverStatus = ref()
+    let SignUpStatus = ref();//是否处于报名状态
+    let SignUpOverStatus = ref()//是否报名已结束
+    let AssignStudentStatus = ref()//是否已经分配考生
+    let AssignProctorStatus = ref()//是否已经分配监考员
+    let AssignOverStatus = ref()//是否分配工作完成
+
     //生命周期
     onMounted(() => {
       getSignUpStatus()
       getAssignStudentStatus()
       getAssignProctorStatus()
+      getAssignOverStatus()
       getSignUpOverStatus()
     })
     //按钮  自动分配控制
@@ -53,15 +56,14 @@ export default {
       )
         .then(() => {
           axios.get('http://localhost:8080/autoAssignController/autoAssignStudent').then((response) => {
-            setAssignStudentStatus(true)//让分配学生按钮不可点击
-            setAssignProctorStatus(false)//让分配监考员按钮可点击
+            setAssignStudentStatus(true)//让分配学生按钮不可点击,并且标识分配工作已完成
             ElMessage({
               type: 'success',
               message: response.data,
             })
           })
             .catch(error => {
-              console.log('请求失败了', error.message)
+              console.log('请求失败了', error.response.data)
               ElMessage({
                 type: 'error',
                 message: error.response.data,
@@ -89,14 +91,15 @@ export default {
       )
         .then(() => {
           axios.get('http://localhost:8080/autoAssignController/autoAssignProctor').then((response) => {
-            setAssignProctorStatus(true)//让分配监考员按钮不可点击
+            setAssignProctorStatus(true)//让分配监考员按钮不可点击，并且标识分配监考员已完成
+            setAssignOverStatus(true)//标识分配工作已完成
             ElMessage({
               type: 'success',
               message: response.data,
             })
           })
             .catch(error => {
-              console.log('请求失败了', error.message)
+              console.log('请求失败了', error.response.data)
               ElMessage({
                 type: 'error',
                 message: error.response.data,
@@ -134,19 +137,12 @@ export default {
           }
         }).then((response) => {
           getSignUpStatus()
-          if (val == true) {
-            ElMessage({
-              type: 'success',
-              message: response.data,
-            })
-          }
+          ElMessage({
+            type: 'success',
+            message: response.data,
+          })
           if (val == false) {
-            setAssignStudentStatus(false)//如果点击了结束报名按钮，就让分配考生按钮可以点击
-            setSignUpOverStatus(true)//标识报名工作已结束
-            ElMessage({
-              type: 'success',
-              message: response.data,
-            })
+            setSignUpOverStatus(true)//标识报名已结束
           }
         }).catch((error) => {
           ElMessage({
@@ -161,6 +157,20 @@ export default {
         })
       })
 
+    }
+    const getSignUpOverStatus = () => {
+      axios.get('http://localhost:8080/autoAssignController/getSignUpOverStatus').then((response) => {
+        SignUpOverStatus.value = response.data
+      })
+    }
+    const setSignUpOverStatus = (val) => {
+      axios.get('http://localhost:8080/autoAssignController/setSignUpOverStatus', {
+        params: {
+          status: val
+        }
+      }).then(() => {
+        getSignUpOverStatus()
+      })
     }
     const getAssignStudentStatus = () => {
       axios.get('http://localhost:8080/autoAssignController/getAssignStudentStatus').then((response) => {
@@ -190,18 +200,18 @@ export default {
         getAssignProctorStatus()
       })
     }
-    const getSignUpOverStatus = () => {
-      axios.get('http://localhost:8080/autoAssignController/getSignUpOverStatus').then((response) => {
-        SignUpOverStatus.value = response.data
+    const getAssignOverStatus = () => {
+      axios.get('http://localhost:8080/autoAssignController/getAssignOverStatus').then((response) => {
+        AssignOverStatus.value = response.data
       })
     }
-    const setSignUpOverStatus = (val) => {
-      axios.get('http://localhost:8080/autoAssignController/setSignUpOverStatus', {
+    const setAssignOverStatus = (val) => {
+      axios.get('http://localhost:8080/autoAssignController/setAssignOverStatus', {
         params: {
           status: val
         }
       }).then(() => {
-        getSignUpOverStatus()
+        getAssignOverStatus()
       })
     }
     //页头返回功能
@@ -221,7 +231,11 @@ export default {
       setAssignStudentStatus,
       setAssignProctorStatus,
       getAssignProctorStatus,
-      SignUpOverStatus, getSignUpOverStatus,
+      AssignOverStatus,
+      getAssignOverStatus,
+      setAssignOverStatus,
+      SignUpOverStatus,
+      getSignUpOverStatus,
       setSignUpOverStatus
     }
   }

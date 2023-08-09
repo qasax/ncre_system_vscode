@@ -273,7 +273,7 @@ export default {
                 examRoomID: select.examRoomID,
               }
             }).catch(error => {
-              console.log('请求失败了', error.message)
+              console.log('请求失败了', error.response.data)
               ElMessage({
                 type: 'error',
                 message: error.response.data,
@@ -291,7 +291,7 @@ export default {
             console.log('Some requests failed:', error);
             ElMessage({
               type: 'error',
-              message: error.message,
+              message: error.response.data,
             })
           });
         })
@@ -361,7 +361,7 @@ export default {
           }
         }, 300)
       }).catch(error => {
-        console.log('请求失败了', error.message)
+        console.log('请求失败了', error.response.data)
         ElMessage({
           type: 'error',
           message: error.response.data,
