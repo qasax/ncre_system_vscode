@@ -94,7 +94,7 @@ export default {
       console.log(newValue);
       console.log(oldValue);
       axios
-        .get("http://localhost:8080/examroom/selectIt", {
+        .get("http://localhost:8080/examRoom/selectIt", {
           params: {
             examId: ruleForm.examID,
           },

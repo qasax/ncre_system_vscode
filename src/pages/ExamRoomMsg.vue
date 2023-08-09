@@ -183,7 +183,7 @@ export default {
         }
       )
         .then(() => {
-          axios.get('http://localhost:8080/examroom/deleteOne', {
+          axios.get('http://localhost:8080/examRoom/deleteOne', {
             params: {
               examRoomID: val.examRoomID,
             }
@@ -268,7 +268,7 @@ export default {
         .then(() => {
           Promise.all(selectList.map((select) => {
             console.log(select.examRoomID);
-            return axios.get('http://localhost:8080/examroom/deleteOne', {
+            return axios.get('http://localhost:8080/examRoom/deleteOne', {
               params: {
                 examRoomID: select.examRoomID,
               }
@@ -336,7 +336,7 @@ export default {
     //向数据库请求数据的基础方法
     const getTableData = function () {
       loading.value = true
-      axios.get("http://localhost:8080/examroom/aLLExamroom", {
+      axios.get("http://localhost:8080/examRoom/aLLExamRoom", {
         params: {
           pageNum: state.currentPage,
           pageSize: state.pageSize,

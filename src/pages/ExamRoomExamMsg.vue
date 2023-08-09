@@ -349,7 +349,7 @@ export default {
     //向数据库请求数据的基础方法
     const getTableData = function () {
       loading.value = true
-      axios.get("http://localhost:8080/examRoomExam/aLLExamroomExam", {
+      axios.get("http://localhost:8080/examRoomExam/aLLExamRoomExam", {
         params: {
           pageNum: state.currentPage,
           pageSize: state.pageSize,

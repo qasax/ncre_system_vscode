@@ -80,7 +80,7 @@ export default {
           )
             .then(() => {
               console.log(ruleForm)
-              axios.post('http://localhost:8080/examroom/update', ruleForm)
+              axios.post('http://localhost:8080/examRoom/update', ruleForm)
                 .then((response) => {
                   console.log(response.data)
                   ElMessage({
