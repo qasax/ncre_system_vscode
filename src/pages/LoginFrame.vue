@@ -40,6 +40,7 @@ import { onMounted, ref } from "vue";
 import { useStore } from 'vuex'
 import { ElMessage } from 'element-plus'
 import router from "@/vueRouter/main";
+axios.defaults.withCredentials = true;
 export default {
   setup () {
     let loginName = ref("");
@@ -59,7 +60,6 @@ export default {
         'identifyCode': identifyCode.value,
         'userType': 'admin',
       }
-      axios.defaults.withCredentials = true;
       axios.post('http://localhost:8080/login', requestBody)
         .then(response => {
           console.log(response.data)

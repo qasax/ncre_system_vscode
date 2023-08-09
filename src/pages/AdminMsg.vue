@@ -28,7 +28,7 @@
         <h3>个人资料</h3>
         <el-collapse accordion>
           <el-collapse-item title="点击展开"
-                            @click="selectAdminByusername()">
+                            @click.once="selectAdminByUsername()">
             <el-descriptions class="margin-top"
                              :column="3"
                              border
@@ -126,6 +126,7 @@ import { ElMessage } from 'element-plus';
 import { useStore } from 'vuex'
 import axios from 'axios';
 import router from '@/vueRouter/main'
+axios.defaults.withCredentials = true;
 export default {
   setup () {
     //头像悬浮文本
@@ -158,8 +159,8 @@ export default {
       phoneNumber: '',
       email: ''
     })
-    let selectAdminByusername = () => {
-      axios.get('http://localhost:8080/admin/selectAdminByusername', {
+    let selectAdminByUsername = () => {
+      axios.get('http://localhost:8080/admin/selectAdminByUsername', {
         params: {
           username: store.state.user.username
         }
@@ -177,7 +178,7 @@ export default {
       dialogVisible,
       onSuccess,
       store,
-      selectAdminByusername,
+      selectAdminByUsername,
       userData,
       router,
       goBack,

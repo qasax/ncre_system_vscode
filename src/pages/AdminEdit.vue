@@ -75,7 +75,7 @@ export default {
     })
     //生命周期
     onMounted(() => {
-      axios.get('http://localhost:8080/admin/selectAdminByusername', {
+      axios.get('http://localhost:8080/admin/selectAdminByUsername', {
         params: {
           username: store.state.user.username
         }
